@@ -21,10 +21,8 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private lateinit var seguirB: Button
     private lateinit var imageView: ImageView
     private lateinit var uriString: String
-    private lateinit var nombrec: HashMap<String, String>
     private val usuarios = Firebase.firestore.collection("users")
-    private var storageRef = Firebase.storage.reference
-    private var estaModificando:Boolean = false
+    private val storageRef = Firebase.storage.reference
     private lateinit var binding: ActivityAgregarInfoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,29 +35,17 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         seguirB = binding.seguirButton
         imageView = binding.imageView
 
-        //Recuperar valor de estar modificando
-        estaModificando = intent.getBooleanExtra("estaModificando",false)
-        if (estaModificando){
-            val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
-            Glide.with(this).load(userRef).into(imageView)
-
-            val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
-            docRef.get(Source.CACHE).addOnSuccessListener { document ->
-                nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
-                nombre.setText(nombrec["nombres"])
-                apellidoP.setText(nombrec["apellidoP"])
-                apellidoM.setText(nombrec["apellidoM"])
-            }.addOnFailureListener {
-                Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
-            }
+        //Recuperar usuario si se esta modificando
+        val estaModificando = intent.getBooleanExtra("estaModificando", false)
+        if (estaModificando) {
+            recuperarUsuario()
         }
 
         //pickMedia codigo
-        val pickMedia =
+        /*val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     imageView.setImageURI(uri)
-                    //imageView.setImageBitmap(uriToBitmap(uri))
                     uriString = uri.toString()
                 } else {
                     Toast.makeText(
@@ -68,11 +54,11 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+            }*/
 
         //Evento de escoger imagen
         imageView.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            abrirPickMedia()
         }
 
 
@@ -94,8 +80,8 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
                 intent.putExtra("apellidoP", formatear(apellidoP.text.toString()))
                 intent.putExtra("apellidoM", formatear(apellidoM.text.toString()))
                 intent.putExtra("uri", uriString)
-                if (estaModificando){
-                 intent.putExtra("estaModificando",true)
+                if (estaModificando) {
+                    intent.putExtra("estaModificando", true)
                 }
                 startActivity(intent)
             } else {
@@ -106,6 +92,42 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    private fun abrirPickMedia() {
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                imageView.setImageURI(uri)
+                uriString = uri.toString()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Error",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private fun recuperarUsuario() {
+        recuperarFoto()
+        recuperarInfo()
+    }
+
+    private fun recuperarFoto() {
+        val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
+        Glide.with(this).load(userRef).into(imageView)
+    }
+
+    private fun recuperarInfo() {
+        val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
+        docRef.get(Source.DEFAULT).addOnSuccessListener { document ->
+            val nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
+            nombre.setText(nombrec["nombres"])
+            apellidoP.setText(nombrec["apellidoP"])
+            apellidoM.setText(nombrec["apellidoM"])
+        }.addOnFailureListener {
+            Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
+        }
+    }
 
     //Funcion para eliminar dobles espacios y espacios al final
     private fun formatear(texto: String): String {

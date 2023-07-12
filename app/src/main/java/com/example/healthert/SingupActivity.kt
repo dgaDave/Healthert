@@ -30,6 +30,7 @@ class SingupActivity : AppCompatActivity() {
         registrarBoton.setOnClickListener {
             val email = emailEdit.text.toString().replace(" ", "")
             val password = passwordEdit.text.toString()
+
             if (validarEnConjunto()) {
                 val intent = Intent(this, AgregarInfoPersonaActivity::class.java)
                 intent.putExtra("email", email)

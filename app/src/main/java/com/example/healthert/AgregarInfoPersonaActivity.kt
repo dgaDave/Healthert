@@ -62,7 +62,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         }
 
 
-        //Seguir con el proceso y se guarda la informacion para pasarla al siguiente :)
+        //Seguir con el proceso y se guarda la informacion para pasarla al siguiente
         seguirB.setOnClickListener {
             if (nombre.text.toString().isNotEmpty() && apellidoP.text.toString()
                     .isNotEmpty() && apellidoM.text.toString()

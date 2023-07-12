@@ -93,6 +93,16 @@
             android:textColor="@color/primario"
             android:textSize="15dp"
             tools:ignore="TextSizeCheck" />
+        <TextView
+            android:id="@+id/resetearPassTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/resetearPass"
+            android:textColor="@color/primario"
+            android:textSize="15dp"
+            tools:ignore="TextSizeCheck"    />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

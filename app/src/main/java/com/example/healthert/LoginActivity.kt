@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var signup: TextView
+    private lateinit var fgPass: TextView
     private lateinit var logIn: Button
     private lateinit var emailEdit: EditText
     private lateinit var passwordEdit: EditText
@@ -25,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
         logIn = binding.iniciarBoton
         emailEdit = binding.emailEditText
         passwordEdit = binding.passwordEditText
+        fgPass= binding.resetearPassTextView
 
         //Listener de LogIn
         logIn.setOnClickListener {
@@ -36,6 +38,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
             }
         }
+        //Listener resetear contraseña
+        fgPass.setOnClickListener {
+            forgotPassWD()
+        }
+
         //Listener de Registro
         signup.setOnClickListener {
             val intent = Intent(this, SingupActivity::class.java)
@@ -63,6 +70,20 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+    //Funcion para resetear contraseña
+    private fun forgotPassWD() {
+        var email = emailEdit.text.toString().replace(" ", "")
+        if (email.isNotEmpty()){
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(this, "Correo enviado para cambiar la contraseña a : $email", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, "No se encontró el usuario con este correo", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }else  Toast.makeText(this, "Ingresa un correo", Toast.LENGTH_SHORT).show()
+    }
 
     //Empezar directamente si encuentra usuario
     override fun onStart() {
@@ -73,5 +94,5 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    ///COMENTARIO DE PRUEBA ----
+
 }

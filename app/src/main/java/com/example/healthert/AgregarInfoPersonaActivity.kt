@@ -26,18 +26,20 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAgregarInfoBinding
 
     //Codigo del pickMedia (Probablemente se cambie en un futuro)
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            imageView.setImageURI(uri)
-            uriString = uri.toString()
-        } else {
-            Toast.makeText(
-                this,
-                "Error",
-                Toast.LENGTH_SHORT
-            ).show()
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                imageView.setImageURI(uri)
+                uriString = uri.toString()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Error",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAgregarInfoBinding.inflate(layoutInflater)
@@ -60,12 +62,9 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         }
 
 
-        //Seguir con el proceso y se guarda la informacion para pasarla al siguiente :)
+        //Seguir con el proceso y se guarda la informacion para pasarla al siguiente
         seguirB.setOnClickListener {
-            if (nombre.text.toString().isNotEmpty() && apellidoP.text.toString()
-                    .isNotEmpty() && apellidoM.text.toString()
-                    .isNotEmpty() && uriString.isNotEmpty()
-            ) {
+            if (validarInfo()) {
                 //Preguntar si estamos registrando un paciente
                 val esPaciente = intent.getBooleanExtra("esPaciente", false)
                 var intent = Intent(this, AgregarTelActivity::class.java)
@@ -88,6 +87,12 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
             }
         }
         setContentView(binding.root)
+    }
+
+    private fun validarInfo(): Boolean {
+        return (nombre.text.toString().isNotEmpty() && apellidoP.text.toString()
+            .isNotEmpty() && apellidoM.text.toString()
+            .isNotEmpty() && uriString.isNotEmpty())
     }
 
     private fun abrirPickMedia() {

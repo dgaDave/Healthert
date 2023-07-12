@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
             }
         }
-
+        //Intento de cambio
         //Listener de Registro
         signup.setOnClickListener {
             val intent = Intent(this, SingupActivity::class.java)

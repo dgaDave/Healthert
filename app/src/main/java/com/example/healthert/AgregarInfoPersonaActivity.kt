@@ -107,10 +107,10 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private fun recuperarInfo() {
         val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
         docRef.get(Source.DEFAULT).addOnSuccessListener { document ->
-            val nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
-            nombre.setText(nombrec["nombres"])
-            apellidoP.setText(nombrec["apellidoP"])
-            apellidoM.setText(nombrec["apellidoM"])
+            val nombrec = document.data?.getValue("nombrec") as HashMap<*, *>
+            nombre.setText(nombrec["nombres"].toString())
+            apellidoP.setText(nombrec["apellidoP"].toString())
+            apellidoM.setText(nombrec["apellidoM"].toString())
         }.addOnFailureListener {
             Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
         }

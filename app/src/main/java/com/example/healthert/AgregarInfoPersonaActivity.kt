@@ -123,10 +123,8 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
 
     //Funcion para eliminar dobles espacios y espacios al final
     private fun formatear(texto: String): String {
-        // Eliminar espacios duplicados
-        val textoSinDoblesEspacios = texto.replace("\\s+".toRegex(), " ")
-        // Eliminar espacios al final
-        // Devolver el texto modificado
+        val textoSinDoblesEspacios = texto.replace("  ", " ")
+        //Texto sin espacios al final
         return textoSinDoblesEspacios.replace("\\s+$".toRegex(), "")
     }
 }

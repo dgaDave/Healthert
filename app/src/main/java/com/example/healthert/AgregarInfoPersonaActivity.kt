@@ -25,6 +25,19 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private val storageRef = Firebase.storage.reference
     private lateinit var binding: ActivityAgregarInfoBinding
 
+    //Codigo del pickMedia (Probablemente se cambie en un futuro)
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            imageView.setImageURI(uri)
+            uriString = uri.toString()
+        } else {
+            Toast.makeText(
+                this,
+                "Error",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAgregarInfoBinding.inflate(layoutInflater)
@@ -40,21 +53,6 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         if (estaModificando) {
             recuperarUsuario()
         }
-
-        //pickMedia codigo
-        /*val pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    imageView.setImageURI(uri)
-                    uriString = uri.toString()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Error",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }*/
 
         //Evento de escoger imagen
         imageView.setOnClickListener {
@@ -93,18 +91,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     }
 
     private fun abrirPickMedia() {
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                imageView.setImageURI(uri)
-                uriString = uri.toString()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Error",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun recuperarUsuario() {

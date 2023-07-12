@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".VincularActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo1_sf" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Vincula tu smartwatch"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="Para poder recibir los datos de tu paciente, se necesita tener un smartwatch vinculado con el, escribe el siguiente codigo en tu aplicacion del smartwatch:"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/codigoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ABCDEF"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:layout_marginBottom="170dp"
+        />
+
+
+</LinearLayout>

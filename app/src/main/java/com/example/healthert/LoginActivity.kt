@@ -73,5 +73,5 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    ///PRUEBA DE CAMBIO
+    ///COMENTARIO DE PRUEBA ----
 }

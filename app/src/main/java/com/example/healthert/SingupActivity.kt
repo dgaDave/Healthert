@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.util.PatternsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.healthert.databinding.ActivitySingupBinding
@@ -30,10 +29,10 @@ class SingupActivity : AppCompatActivity() {
 
         //Mandar informacion a la siguiente pantalla
         registrarBoton.setOnClickListener {
-            var email = emailEdit.text.toString().replace(" ", "")
-            var password = passwordEdit.text.toString()
-            if (validar()) {
-                var intent = Intent(this, AgregarInfoPersonaActivity::class.java)
+            val email = emailEdit.text.toString().replace(" ", "")
+            val password = passwordEdit.text.toString()
+            if (validarEnConjunto()) {
+                val intent = Intent(this, AgregarInfoPersonaActivity::class.java)
                 intent.putExtra("email", email)
                 intent.putExtra("password", password)
                 startActivity(intent)
@@ -46,7 +45,8 @@ class SingupActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun validar():Boolean{
+    //Esta funcion hace que se validen en conjunto y añade los efectos para que salga en rojo si es que no cumple con los requisitos
+    private fun validarEnConjunto():Boolean{
        return if (validatePassword() and  validateEmail()){
             true
         }else{

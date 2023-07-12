@@ -26,7 +26,6 @@ class SingupActivity : AppCompatActivity() {
         passwordEdit = binding.passwordEditText
         registrarBoton = binding.registrarBoton
 
-
         //Mandar informacion a la siguiente pantalla
         registrarBoton.setOnClickListener {
             val email = emailEdit.text.toString().replace(" ", "")

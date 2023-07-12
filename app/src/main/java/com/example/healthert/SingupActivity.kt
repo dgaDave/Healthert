@@ -11,7 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import com.example.healthert.databinding.ActivitySingupBinding
 import java.util.regex.Pattern
 
-
 class SingupActivity : AppCompatActivity() {
     private lateinit var emailEdit: EditText
     private lateinit var passwordEdit: EditText

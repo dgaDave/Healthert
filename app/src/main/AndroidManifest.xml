@@ -22,9 +22,11 @@
         android:theme="@style/Theme.Healthert"
         tools:targetApi="31">
         <activity
+            android:name=".ResetearPassActivity"
+            android:exported="false" />
+        <activity
             android:name=".AgendarMedicamentoActivity"
             android:exported="false" />
-
 
         <receiver
             android:name=".BootReceiver"

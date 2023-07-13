@@ -5,6 +5,7 @@
     <string name="iniciar_sesion">Iniciar sesion</string>
     <string name="unirse">Unirse</string>
     <string name="resetearPass">¿Olvidaste tu contraseña?</string>
+    <string name="instruccion_resetpw">Ingresa tu correo para cambiar tu contraseña</string>
     <string name="nombre_completo">Nombre Completo</string>
     <string name="edad">Edad</string>
     <string name="salir_de_la_cuenta">Salir de la cuenta</string>

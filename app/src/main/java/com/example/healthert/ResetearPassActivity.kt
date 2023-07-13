@@ -20,9 +20,9 @@ class ResetearPassActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resetear_pass)
 
-        var email_puesto:String?= intent.getStringExtra("email_puesto")
+        val emailPuesto:String?= intent.getStringExtra("email_puesto")
         initElements()
-        if(email_puesto!=null) emailEdit.setText(email_puesto)
+        if(emailPuesto!=null) emailEdit.setText(emailPuesto)
 
        //listener para enviar correo y resetear contraseña
         resetButton.setOnClickListener {
@@ -33,14 +33,14 @@ class ResetearPassActivity : AppCompatActivity() {
 
     //Funcion para resetear contraseña
     private fun forgotPassWD() {
-        var email = emailEdit.text.toString().replace(" ", "")
+        val email = emailEdit.text.toString().replace(" ", "")
         if (email.isNotEmpty()){
             FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         Toast.makeText(this, "Correo enviado para cambiar la contraseña a : $email", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, LoginActivity::class.java))
-                        finish()
+                        finishAffinity()
                     }else{
                         Toast.makeText(this, "No se encontró el usuario con este correo", Toast.LENGTH_SHORT).show()
                     }

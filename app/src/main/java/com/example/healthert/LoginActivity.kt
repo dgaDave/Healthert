@@ -38,9 +38,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
             }
         }
-        //Listener resetear contraseña
+        //Listener que manda a resetear la contraseña
         fgPass.setOnClickListener {
-            forgotPassWD()
+            val email = emailEdit.text.toString().replace(" ", "")
+            openResetPW(email)
+
         }
 
         //Listener de Registro
@@ -70,20 +72,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
-    //Funcion para resetear contraseña
-    private fun forgotPassWD() {
-        var email = emailEdit.text.toString().replace(" ", "")
-        if (email.isNotEmpty()){
-            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Toast.makeText(this, "Correo enviado para cambiar la contraseña a : $email", Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(this, "No se encontró el usuario con este correo", Toast.LENGTH_SHORT).show()
-                    }
-                }
-        }else  Toast.makeText(this, "Ingresa un correo", Toast.LENGTH_SHORT).show()
-    }
 
     //Empezar directamente si encuentra usuario
     override fun onStart() {
@@ -92,6 +80,18 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity2::class.java))
             finish()
         }
+    }
+    //Funcion para mandar a resetear contraseña--se encarga de mandar el correo al activity sí el usuario lo escribio
+    // en el EditText
+    private fun openResetPW(email: String){
+        val intent = Intent(this, ResetearPassActivity::class.java)
+        if(email.isNotEmpty()){
+            intent.putExtra("email", email)
+            startActivity(intent)
+        }else{
+            startActivity(intent)
+        }
+
     }
 
 

@@ -20,7 +20,7 @@ class ResetearPassActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resetear_pass)
 
-        val emailPuesto:String?= intent.getStringExtra("email_puesto")
+        val emailPuesto:String?= intent.getStringExtra("email")
         initElements()
         if(emailPuesto!=null) emailEdit.setText(emailPuesto)
 

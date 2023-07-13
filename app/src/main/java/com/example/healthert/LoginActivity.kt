@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         }
         //Listener que manda a resetear la contraseña
         fgPass.setOnClickListener {
-            var email = emailEdit.text.toString().replace(" ", "")
+            val email = emailEdit.text.toString().replace(" ", "")
             openResetPW(email)
 
         }
@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
     private fun openResetPW(email: String){
         val intent = Intent(this, ResetearPassActivity::class.java)
         if(email.isNotEmpty()){
-            intent.putExtra("email_puesto", email)
+            intent.putExtra("email", email)
             startActivity(intent)
         }else{
             startActivity(intent)

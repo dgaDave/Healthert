@@ -166,7 +166,7 @@ class AgregarSaludActivity : AppCompatActivity() {
                 }
 
             }.addOnFailureListener {
-                Toast.makeText(this, "No se pudo registrar", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_LONG).show()
 
             }
 

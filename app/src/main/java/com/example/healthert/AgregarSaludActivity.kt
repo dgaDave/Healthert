@@ -146,7 +146,7 @@ class AgregarSaludActivity : AppCompatActivity() {
         insertaDB(paciente, curp, uri)
 
     }
-
+ 
     //Función para registrar los datos en la base de datos remota
     private fun insertaDB(paciente: Map<String, Any>, curp: String, uri: String) {
         db.collection("users")

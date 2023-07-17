@@ -1,13 +1,11 @@
 package com.example.healthert
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -23,15 +20,12 @@ import com.bumptech.glide.Glide
 import com.example.healthert.ui.dashboard.Paciente
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
-import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -44,7 +38,6 @@ class PacientesSaludAdapter(
     private val uid: String,
     private val pacientes: List<Paciente>,
     private val fragment: Fragment,
-    private val activity : Activity
 ) :
     RecyclerView.Adapter<PacientesSaludAdapter.ViewHolder>() {
     private var storageRef = Firebase.storage.reference
@@ -92,7 +85,7 @@ class PacientesSaludAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        val nombrec = pacientes[i].nombrec as HashMap<String, String>
+        val nombrec = pacientes[i].nombrec
         val nombres = nombrec["nombres"]
         val apellidoP = nombrec["apellidoP"]
         val apellidoM = nombrec["apellidoM"]
@@ -105,14 +98,13 @@ class PacientesSaludAdapter(
         val padecimientos = pacientes[i].padecimientos
         val alergias = pacientes[i].alergias
         var adapter: TratamientosAdapter
-        var tratamientos = mutableListOf<Tratamiento>()
-        var alertas = mutableListOf<Alerta>()
-        var historiales = mutableListOf<Historial>()
+        val tratamientos = mutableListOf<Tratamiento>()
+        val alertas = mutableListOf<Alerta>()
+        val historiales = mutableListOf<Historial>()
         val timestampFin = Timestamp.now()
         val calendar = Calendar.getInstance()
         calendar.time = timestampFin.toDate()
         calendar.add(Calendar.MONTH, -1)
-        val timestampIni = Timestamp(calendar.time)
 
 
         db.collection("tratamientos")
@@ -125,7 +117,7 @@ class PacientesSaludAdapter(
                 adapter = TratamientosAdapter(tratamientos)
                 viewHolder.viewPagerTratamientos.adapter = adapter
 
-                if (tratamientos.isNullOrEmpty()) {
+                if (tratamientos.isEmpty()) {
                     viewHolder.floatingActionButtonAtras.hide()
                     viewHolder.floatingActionButtonSiguiente.hide()
                     viewHolder.viewPagerTratamientos.visibility = View.GONE
@@ -136,7 +128,7 @@ class PacientesSaludAdapter(
 
         //Ordenar con los longs ya hechos
 
-        db.collection("alertas").whereEqualTo("usuarioCuidador", "${pacientes[i].usuarioCuidador}")
+        db.collection("alertas").whereEqualTo("usuarioCuidador", pacientes[i].usuarioCuidador)
             .get().addOnSuccessListener {
             for (document in it) {
                 val alerta = document.toObject(Alerta::class.java)
@@ -160,20 +152,20 @@ class PacientesSaludAdapter(
         }
 
 
-        var userRef = storageRef.child("images/" + "$uid$curp")
+        val userRef = storageRef.child("images/" + "$uid$curp")
         Glide.with(fragment).load(userRef).into(viewHolder.imageView)
         viewHolder.nombre.text = "$nombres $apellidoP $apellidoM"
-        viewHolder.curp.text = "$curp"
+        viewHolder.curp.text = curp
         viewHolder.peso.text = "$peso kg"
         viewHolder.altura.text = "$altura cm"
         viewHolder.edad.text = "$edad años"
-        viewHolder.padecimientos.text = "$padecimientos"
-        viewHolder.alergias.text = "$alergias"
+        viewHolder.padecimientos.text = padecimientos
+        viewHolder.alergias.text = alergias
 
 
 
         viewHolder.floatingActionButtonAgendar.setOnClickListener {
-            var agendar = Intent(context, AgendarMedicamentoActivity::class.java)
+            val agendar = Intent(context, AgendarMedicamentoActivity::class.java)
             agendar.putExtra("paciente", "$uid$curp")
             context.startActivity(agendar)
         }
@@ -200,7 +192,7 @@ class PacientesSaludAdapter(
         alertas: List<Alerta>,
         historiales: List<Historial>
     ) {
-        var archivo: File? = null
+        val archivo: File?
         try {
 
 
@@ -276,10 +268,10 @@ class PacientesSaludAdapter(
                     )
                     documento.add(cantidadT)
                     val fechasT = Paragraph(
-                        "Durante: ${SimpleDateFormat("dd/MM/yyyy").format(tratamiento.fechaIni?.toDate())} - ${
+                        "Durante: ${SimpleDateFormat("dd/MM/yyyy").format(tratamiento.fechaIni?.toDate()!!)} - ${
                             SimpleDateFormat(
                                 "dd/MM/yyyy"
-                            ).format(tratamiento.fechaFinal?.toDate())
+                            ).format(tratamiento.fechaFinal?.toDate()!!)
                         }\n",
                         FontFactory.getFont("arial", 12f)
                     )
@@ -299,14 +291,14 @@ class PacientesSaludAdapter(
                     FontFactory.getFont("arial", 16f, Font.BOLD)
                 )
                 documento.add(tituloAlertas)
-                var tabla = PdfPTable(2)
+                val tabla = PdfPTable(2)
                 tabla.addCell("Tipo de alerta")
                 tabla.addCell("Fecha")
 
 
                 for (alerta in alertas) {
                     tabla.addCell(alerta.tipo.replaceFirstChar { it.uppercase() })
-                    tabla.addCell("${SimpleDateFormat("dd/MM/yyyy HH:mm").format(alerta.timestamp?.toDate())}")
+                    tabla.addCell(SimpleDateFormat("dd/MM/yyyy HH:mm").format(alerta.timestamp?.toDate()!!))
 
                 }
                 documento.add(tabla)
@@ -324,14 +316,14 @@ class PacientesSaludAdapter(
                 )
                 documento.add(tituloMediciones)
 
-                var tabla = PdfPTable(2)
+                val tabla = PdfPTable(2)
                 tabla.addCell("BPM")
                 tabla.addCell("Fecha")
 
 
                 for (historial in historiales) {
                     tabla.addCell(historial.bpm.toString())
-                    tabla.addCell("${SimpleDateFormat("dd/MM/yyyy HH:mm").format(historial.timestamp?.toDate())}")
+                    tabla.addCell(SimpleDateFormat("dd/MM/yyyy HH:mm").format(historial.timestamp?.toDate()!!))
 
                 }
                 documento.add(tabla)

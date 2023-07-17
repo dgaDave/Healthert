@@ -33,7 +33,7 @@ class PacientesAdapter(private val context:Context, private val uid:String,priva
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        val nombrec = pacientes[i].nombrec as HashMap<String,String>
+        val nombrec = pacientes[i].nombrec
         val nombres = nombrec["nombres"]
         val apellidoP = nombrec ["apellidoP"]
         val apellidoM = nombrec["apellidoM"]
@@ -51,7 +51,7 @@ class PacientesAdapter(private val context:Context, private val uid:String,priva
             }
 
         })
-        var userRef = storageRef.child("images/" + "$uid$curp")
+        val userRef = storageRef.child("images/$uid$curp")
         Glide.with(fragment).load(userRef).into(viewHolder.imageView)
         viewHolder.nombre.text = "$nombres $apellidoP $apellidoM"
     }

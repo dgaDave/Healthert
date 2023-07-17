@@ -75,8 +75,4 @@ class MyService : Service() {
         return START_STICKY
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
 }

@@ -2,13 +2,11 @@ package com.example.healthert.ui.dashboard
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -86,20 +84,20 @@ class DashboardFragment : Fragment() {
                                         .value != null
                                 ) {
                                     val posicion = LatLng(
-                                        snapshot.child("latitud")?.value as Double,
-                                        snapshot.child("longitud")?.value as Double
+                                        snapshot.child("latitud").value as Double,
+                                        snapshot.child("longitud").value as Double
                                     )
-                                    var colorMarcador : Float
+                                    val colorMarcador : Float
 
                                     //Configuracion del marcador
                                     val isDarkTheme = isDarkTheme(requireContext())
-                                    if (isDarkTheme) {
-                                        colorMarcador = BitmapDescriptorFactory.HUE_MAGENTA
+                                    colorMarcador = if (isDarkTheme) {
+                                        BitmapDescriptorFactory.HUE_MAGENTA
                                     } else {
-                                        colorMarcador = BitmapDescriptorFactory.HUE_GREEN
+                                        BitmapDescriptorFactory.HUE_GREEN
                                     }
                                     //Inicializamos el marcador, si existe uno ya anterior, lo eliminamos
-                                    var marcador =
+                                    val marcador =
                                         MarkerOptions().position(posicion).draggable(false).icon(
                                             BitmapDescriptorFactory.defaultMarker(colorMarcador)
                                         )
@@ -116,7 +114,7 @@ class DashboardFragment : Fragment() {
                                     //inicializamos si se esta observandolo como false y animamos y observamossolo la primera vez
                                     if (!animado) {
                                         val cameraPosition =
-                                            CameraPosition.builder().target(marker!!.position)
+                                            CameraPosition.builder().target(marker.position)
                                                 .zoom(17f).build()
                                         googleMap.animateCamera(
                                             CameraUpdateFactory.newCameraPosition(
@@ -126,12 +124,12 @@ class DashboardFragment : Fragment() {
                                         estaSiendoVisto[dispositivo] = true
                                         animado = true
                                     }
-                                    markerList.add(marker!!)
+                                    markerList.add(marker)
 
                                     //evento para animar si es que esta siendo observado
                                     if (estaSiendoVisto[dispositivo]!!) {
                                         val cameraPosition =
-                                            CameraPosition.builder().target(marker!!.position)
+                                            CameraPosition.builder().target(marker.position)
                                                 .zoom(17f).build()
                                         googleMap.animateCamera(
                                             CameraUpdateFactory.newCameraPosition(

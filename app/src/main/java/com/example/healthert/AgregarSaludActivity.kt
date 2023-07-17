@@ -80,11 +80,7 @@ class AgregarSaludActivity : AppCompatActivity() {
             binding.padecimientosTextField.error = null
             i++
         }
-        return if (i == 6) {
-            return true
-        } else {
-            return false
-        }
+        return i == 6
     }
 
     //Se obtenienen los datos de los campos y se mandan a la función del registro

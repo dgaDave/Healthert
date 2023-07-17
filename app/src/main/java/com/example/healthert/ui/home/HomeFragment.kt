@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
             adapter = PacientesSaludAdapter(
                 requireContext(),
                 FirebaseAuth.getInstance().uid.toString(),
-                pacientes, this,requireActivity()
+                pacientes, this
             )
             viewPager.adapter = adapter
         }

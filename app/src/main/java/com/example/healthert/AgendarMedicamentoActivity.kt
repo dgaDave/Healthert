@@ -8,10 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.healthert.databinding.ActivityAgendarMedicamentoBinding
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -97,9 +95,8 @@ class AgendarMedicamentoActivity : AppCompatActivity() {
                 val diaInicio = diaInicioEditText.text.toString()
                 val horaInicio = horaInicioEditText.text.toString()
                 val momentoInicio =
-                    SimpleDateFormat("dd/MM/yyyy HH:mm").parse(("$diaInicio $horaInicio")).time
+                    SimpleDateFormat("dd/MM/yyyy HH:mm").parse(("$diaInicio $horaInicio"))!!.time
                 val momentoFinal = momentoInicio + 86400000 * numDias
-                var ini = momentoInicio
 
                 val tratamiento = mapOf(
                     "nombreMedicamento" to nombre,
@@ -112,25 +109,8 @@ class AgendarMedicamentoActivity : AppCompatActivity() {
 
                 db.collection("tratamientos").add(tratamiento)
 
-                while (ini < momentoFinal) {
+                inicializarAlarmas(nombre, cantidad, momentoInicio, momentoFinal, ref, numHoras)
 
-                    val nDare = Date(ini)
-                    val timestamp = Timestamp(nDare)
-
-                    val data = mapOf(
-                        "nombreMedicamento" to nombre,
-                        "cantidad" to cantidad,
-                        "timestamp" to timestamp,
-                        "fechaLong" to ini,
-                        "paciente" to ref
-                    )
-
-                    db.collection("medicamentos").add(data).addOnSuccessListener {
-                        Log.e("subir", "Se subio correctamente")
-                    }
-
-                    ini += 3600000 * numHoras
-                }
                 startActivity(Intent(this,MainActivity2::class.java))
                 finishAffinity()
 
@@ -138,6 +118,30 @@ class AgendarMedicamentoActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun inicializarAlarmas(nombre: String, cantidad: Int, momentoInicial: Long, momentoFinal: Long, ref: String, numHoras: Int){
+        var ini = momentoInicial
+        while (ini < momentoFinal) {
+
+            val nDare = Date(ini)
+            val timestamp = Timestamp(nDare)
+
+            val data = mapOf(
+                "nombreMedicamento" to nombre,
+                "cantidad" to cantidad,
+                "timestamp" to timestamp,
+                "fechaLong" to ini,
+                "paciente" to ref
+            )
+
+            db.collection("medicamentos").add(data).addOnSuccessListener {
+                Log.e("subir", "Se subio correctamente")
+            }
+
+            ini += 3600000 * numHoras
+        }
+
     }
 
     private fun validar(): Boolean {

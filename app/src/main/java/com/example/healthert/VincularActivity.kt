@@ -3,7 +3,6 @@ package com.example.healthert
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.healthert.databinding.ActivityVincularBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,8 +22,8 @@ class VincularActivity : AppCompatActivity() {
         storageRef.collection("users").document(documento).update("codigo",codigo.uppercase())
         binding.codigoTextView.text = codigo.uppercase()
 
-        var docRef = storageRef.collection("users").document(documento)
-        docRef.addSnapshotListener { snapshot, e ->
+        val docRef = storageRef.collection("users").document(documento)
+        docRef.addSnapshotListener { snapshot, _ ->
             if (snapshot?.data?.get("codigo")==null){
              startActivity(Intent(this,MainActivity2::class.java))
                 finishAffinity()

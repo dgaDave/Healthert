@@ -33,9 +33,11 @@ class TratamientosAdapter(private val medicamentosAgendados : List<PacientesSalu
     }
 
     override fun onBindViewHolder(viewHolder: TratamientosAdapter.ViewHolder, i: Int) {
-        val nombreMedicamento = medicamentosAgendados[i].nombreMedicamento.toString()
+        val nombreMedicamento = medicamentosAgendados[i].nombreMedicamento
         val indicaciones = "${medicamentosAgendados[i].cantidad} cada ${medicamentosAgendados[i].numHoras} horas"
-        val fechas = "Inicio:${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaIni?.toDate())} Fin:${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaFinal?.toDate())}"
+        val fechas = "Inicio:${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaIni?.toDate()!!)} Fin:${SimpleDateFormat("dd/MM/yyyy").format(
+            medicamentosAgendados[i].fechaFinal?.toDate()!!
+        )}"
 
         viewHolder.nombreMedicamento.text = nombreMedicamento
         viewHolder.indicaciones.text = indicaciones

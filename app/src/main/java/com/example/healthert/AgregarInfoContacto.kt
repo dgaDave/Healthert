@@ -9,35 +9,45 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.healthert.databinding.ActivityAgregarTelBinding
+import com.example.healthert.databinding.ActivityAgregarInfoContactoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 
-class AgregarTelActivity : AppCompatActivity() {
+class AgregarInfoContacto : AppCompatActivity() {
 
     private lateinit var registrarBoton: Button
-    private lateinit var numeroText: EditText
+    private lateinit var telEditText: EditText
+    private lateinit var calleEditText: EditText
+    private lateinit var codigoPostalEditText: EditText
+    private lateinit var coloniaEditText: EditText
+    private lateinit var municipioEditText: EditText
+    private lateinit var estadoEditText: EditText
     private val db = Firebase.firestore
     private var storageRef = Firebase.storage.reference
-    private lateinit var binding: ActivityAgregarTelBinding
+    private lateinit var binding: ActivityAgregarInfoContactoBinding
     private lateinit var sharedPreferences:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAgregarTelBinding.inflate(layoutInflater)
+        binding = ActivityAgregarInfoContactoBinding.inflate(layoutInflater)
         sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         registrarBoton = binding.registrarBoton
-        numeroText = binding.telEditText
+        telEditText = binding.telEditText
+        calleEditText = binding.calleEditText
+        codigoPostalEditText = binding.codigoPostalEditText
+        coloniaEditText = binding.coloniaEditText
+        municipioEditText = binding.municipioEditText
+        estadoEditText = binding.estadoEditText
 
         //Si esta modificando se pone el texto en el campo
         val estaModificando = intent.getBooleanExtra("estaModificando", false)
         if (estaModificando) {
             db.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get()
                 .addOnSuccessListener { document ->
-                    numeroText.setText(document.get("telefono").toString())
+                    telEditText.setText(document.get("telefono").toString())
                 }.addOnFailureListener {
                     Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
                 }
@@ -45,25 +55,32 @@ class AgregarTelActivity : AppCompatActivity() {
 
         //evento de registrar
         registrarBoton.setOnClickListener {
-            if (numeroText.text.toString()
-                    .isNotEmpty() && numeroText.text.toString().length == 10
-            ) {
+            if (validarDatos()) {
                 if (estaModificando){
                     modificarUsuario(intent.getStringExtra("nombre")!!,
                         intent.getStringExtra("apellidoP")!!,
                         intent.getStringExtra("apellidoM")!!,
                         intent.getStringExtra("uri")!!,
-                        numeroText.text.toString())
+                        telEditText.text.toString())
                 }else{
                     setContentView(R.layout.loading_layout)
                     registrarUsuario(
                         intent.getStringExtra("email")!!,
                         intent.getStringExtra("password")!!,
-                        intent.getStringExtra("nombre")!!,
-                        intent.getStringExtra("apellidoP")!!,
-                        intent.getStringExtra("apellidoM")!!,
+                        mapOf(
+                                "nombres" to intent.getStringExtra("nombre")!!,
+                                "apellidoP" to intent.getStringExtra("apellidoP")!!,
+                                "apellidoM" to intent.getStringExtra("apellidoM")!!
+                        ),
                         intent.getStringExtra("uri")!!,
-                        numeroText.text.toString()
+                        telEditText.text.toString(),
+                        mapOf(
+                            "calle" to calleEditText.text.toString(),
+                            "codigoPostal" to codigoPostalEditText.text.toString(),
+                            "colonia" to coloniaEditText.text.toString(),
+                            "municipio" to municipioEditText.text.toString(),
+                            "estado" to estadoEditText.text.toString()
+                        )
                     )
                 }
 
@@ -75,31 +92,66 @@ class AgregarTelActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    private fun validarDatos():Boolean{
+        var i = 0
+        //Validar telefono
+        if (telEditText.text.toString().isNotEmpty() && telEditText.text.length==10){
+            i++
+        }else{
+
+        }
+        //Validar calle
+        if (calleEditText.text.isNotEmpty()){
+            i++
+        }else{
+
+        }
+        //Validar codigo postal
+        if (codigoPostalEditText.text.isNotEmpty()){
+            i++
+        }else{
+
+        }
+        //Validar colonia
+        if (coloniaEditText.text.isNotEmpty()){
+            i++
+        }else{
+
+        }
+        //Validar municipio
+        if (municipioEditText.text.isNotEmpty()){
+            i++
+        }else{
+
+        }
+        //Validar estado
+        if (estadoEditText.text.isNotEmpty()){
+            i++
+        }else{
+
+        }
+        return i==6
+    }
 
     private fun registrarUsuario(
         email: String,
         password: String,
-        nombre: String,
-        apellidoP: String,
-        apellidoM: String,
+        nombrec: Map<String,String>,
         uri: String,
-        telefono: String
+        telefono: String,
+        domicilio: Map<String,String>
     ) {
         //Registra en firebase auth
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    val nombrec = hashMapOf(
-                        "nombres" to nombre,
-                        "apellidoP" to apellidoP,
-                        "apellidoM" to apellidoM
-                    )
-
-                    val personaCuidadora = hashMapOf(
+                    val personaCuidadora = mapOf(
                         "nombrec" to nombrec,
                         "email" to email,
-                        "telefono" to telefono
+                        "telefono" to telefono,
+                        "domicilio" to domicilio
                     )
+
                     //Registra datos en cloud
                     db.collection("users").document(FirebaseAuth.getInstance().uid.toString())
                         .set(personaCuidadora).addOnSuccessListener {
@@ -131,8 +183,7 @@ class AgregarTelActivity : AppCompatActivity() {
         apellidoP: String,
         apellidoM: String,
         uri: String,
-        telefono: String
-    ) {
+        telefono: String) {
         val nombrec = hashMapOf(
             "nombres" to nombre,
             "apellidoP" to apellidoP,

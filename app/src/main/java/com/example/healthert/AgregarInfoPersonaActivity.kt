@@ -67,7 +67,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
             if (validarInfo()) {
                 //Preguntar si estamos registrando un paciente
                 val esPaciente = intent.getBooleanExtra("esPaciente", false)
-                var intent = Intent(this, AgregarTelActivity::class.java)
+                var intent = Intent(this, AgregarInfoContacto::class.java)
                 if (esPaciente) {
                     intent = Intent(this, AgregarSaludActivity::class.java)
                 }

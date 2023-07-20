@@ -66,9 +66,10 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AgregarTelActivity"
+            android:name=".AgregarInfoContacto"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            />
 
         <meta-data
             android:name="com.google.android.gms.version"

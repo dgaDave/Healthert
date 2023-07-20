@@ -16,7 +16,7 @@
     <string name="numero_de_celular">Numero de celular</string>
     <string name="curp">CURP</string>
     <string name="seguir">Seguir</string>
-    <string name="cuentanos_m_s">Cuentanos más de tí.</string>
+    <string name="cuentanos_m_s">Informacion básica.</string>
     <string name="permitenos_conocerte">Permitenos conocerte.</string>
     <string name="elegir_foto">Abrir Galeria</string>
     <string name="subir_foto">Subir foto</string>
@@ -26,10 +26,21 @@
     <string name="encuentrame">Ubicacion</string>
     <string name="configuracione">Configuracion</string>
     <string name="salir">Salir</string>
+    <string name="contacto">Contacto.</string>
 
     <string-array name="sexosStrings">
         <item>Masculino</item>
         <item>Femenino</item>
         <item>Prefiero no especificar</item>
+    </string-array>
+    <string-array name="gruposSanguineosStrings">
+        <item>O+</item>
+        <item>O-</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
     </string-array>
 </resources>

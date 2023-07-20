@@ -73,6 +73,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            style="@style/Widget.Material3.Button"
+            android:textSize="20sp"
             android:id="@+id/iniciarBoton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

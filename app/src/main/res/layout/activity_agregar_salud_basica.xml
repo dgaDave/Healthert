@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".AgendarMedicamentoActivity"
-
-    >
+    tools:context=".AgregarSaludBasicaActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,19 +15,19 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo1_sf" />
+            app:srcCompat="@drawable/logo1" />
 
         <TextView
             android:id="@+id/tuSaludTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Agendar medicamento"
-            android:textSize="35sp"
+            android:text="Tú salud"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,108 +43,83 @@
             app:layout_constraintTop_toBottomOf="@id/tuSaludTextView">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nombreMedicamentoTextField"
+                android:id="@+id/curpTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:hint="Nombre del medicamento"
+                android:hint="CURP"
+                app:counterEnabled="true"
+                app:counterMaxLength="18"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                >
+                app:errorIconDrawable="@null">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nombreMedicamentoEditText"
+                    android:id="@+id/curpEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="18" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="25dp"
+                >
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cantidadTextField"
+                    android:id="@+id/fechaNacimientoTextField"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
                     android:layout_weight="1"
-                    android:hint="Cantidad"
+                    android:layout_height="wrap_content"
+                    android:hint="Fecha de Nacimiento"
                     app:errorEnabled="true"
+                    android:layout_width="0dp"
                     app:errorIconDrawable="@null">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/cantidadEditText"
+                        android:id="@+id/fechaNacimientoEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="10" />
+                        android:inputType="date"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:layout_width="0dp"
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_height="wrap_content"
+                    android:text="Edad"
+                    android:layout_marginStart="24dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="por alarma."
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_width="0dp"
+                    android:visibility="gone"
+                    />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Durante:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Cada:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/numeroDiasTextField"
+                    android:id="@+id/alturaTextField"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
+                    android:hint="Altura"
                     android:layout_weight="1"
-                    android:hint="Dias"
                     app:errorEnabled="true"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="24dp"
                     app:errorIconDrawable="@null"
-                    app:suffixText="dias">
+                    app:suffixText="cm.">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/numeroDiasEditText"
+                        android:id="@+id/alturaEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
@@ -154,109 +127,81 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/numeroHorasTextField"
+                    android:id="@+id/pesoTextField"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Horas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Peso"
                     app:errorEnabled="true"
                     app:errorIconDrawable="@null"
-                    app:suffixText="horas">
+                    app:suffixText="kg.">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/numeroHorasEditText"
+                        android:id="@+id/pesoEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="2" />
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Empezando el:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="A las:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/diaInicioTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:id="@+id/sexoTextField"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
                     android:layout_weight="1"
-                    android:hint="Dia"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="24dp"
+                    android:hint="Sexo"
                     app:errorEnabled="true"
                     app:errorIconDrawable="@null">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/diaInicioEditText"
+                    <AutoCompleteTextView
+                        android:id="@+id/sexosAutoCompleteTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:cursorVisible="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:clickable="true"
-                        />
+                        android:inputType="none" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/horaInicioTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                    android:id="@+id/sangreTextField"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Hora"
+                    android:layout_width="0dp"
+                    android:hint="Gpo. Sang."
                     app:errorEnabled="true"
                     app:errorIconDrawable="@null">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/horaInicioEditText"
+                    <AutoCompleteTextView
+                        android:id="@+id/sangreAutoCompleteTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:cursorVisible="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:clickable="true" />
+                        android:inputType="none" />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
+
+
             <Button
-                android:id="@+id/agendarBoton"
+                android:id="@+id/continuarButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginBottom="16dp"
                 android:padding="15dp"
-                android:text="Agendar"
+                android:text="Continuar"
                 tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>

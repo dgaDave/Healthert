@@ -62,7 +62,7 @@
             android:value="AIzaSyByPkihtlGPjEtoFbdWhgAB7kipCIZmf_Y" />
 
         <activity
-            android:name=".AgregarSaludActivity"
+            android:name=".AgregarSaludBasicaActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity

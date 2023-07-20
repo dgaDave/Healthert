@@ -5,37 +5,58 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
-import com.example.healthert.databinding.ActivityAgregarSaludBinding
+import com.example.healthert.databinding.ActivityAgregarSaludAvanzadaBinding
+import com.example.healthert.databinding.ActivityAgregarSaludBasicaBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 
-class AgregarSaludActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAgregarSaludBinding
-    private lateinit var registrarButton: Button
+class AgregarSaludAvanzadaActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAgregarSaludAvanzadaBinding
+    private lateinit var continuarButton: Button
+    private lateinit var curpEditText: EditText
+    private lateinit var fechaNacimientoEditText: EditText
+    private lateinit var alturaEditText: EditText
+    private lateinit var pesoEditText: EditText
+    private lateinit var sexoAutoCompleteTextView: AutoCompleteTextView
+    private lateinit var sangreAutoCompleteTextView: AutoCompleteTextView
     private val db = Firebase.firestore
     private var storageRef = Firebase.storage.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        iniciarElementosVisuales()
-        registrarButton.setOnClickListener {
-            if (validarCampos()) obtenerDatosRegistro()
+        binding = ActivityAgregarSaludAvanzadaBinding.inflate(layoutInflater)
+        continuarButton = binding.continuarButton
+        curpEditText = binding.curpEditText
+        fechaNacimientoEditText = binding.fechaNacimientoEditText
+        alturaEditText = binding.alturaEditText
+        pesoEditText = binding.pesoEditText
+        sexoAutoCompleteTextView = binding.sexosAutoCompleteTextView
+        sangreAutoCompleteTextView = binding.sangreAutoCompleteTextView
+        iniciarSelections()
+
+        continuarButton.setOnClickListener {
+            //if (validarCampos()) obtenerDatosRegistro()
         }
         setContentView(binding.root)
     }
 
-    //Inicializa variables de la interfaz
-    private fun iniciarElementosVisuales() {
-        binding = ActivityAgregarSaludBinding.inflate(layoutInflater)
-        registrarButton = binding.registrarBoton
+    //Inicializa selections
+    private fun iniciarSelections() {
         val sexos = resources.getStringArray(R.array.sexosStrings)
-        val adapter = ArrayAdapter(this, R.layout.list_item, sexos)
-        with(binding.autoCompleteTextView) {
+        var adapter = ArrayAdapter(this, R.layout.list_item, sexos)
+        with(binding.sexosAutoCompleteTextView) {
+            setAdapter(adapter)
+        }
+        val gruposSanguineos = resources.getStringArray(R.array.gruposSanguineosStrings)
+        adapter = ArrayAdapter(this, R.layout.list_item, gruposSanguineos)
+        with(binding.sangreAutoCompleteTextView) {
             setAdapter(adapter)
         }
     }
@@ -44,43 +65,41 @@ class AgregarSaludActivity : AppCompatActivity() {
     //Valida que los campos no estén vacios
     private fun validarCampos(): Boolean {
         var i = 0
-        if (binding.edadEditText.text.toString().isEmpty()) {
-            binding.edadTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.edadTextField.error = null
+        if (curpEditText.text.toString().isNotEmpty() && curpEditText.text.toString().length==18){
             i++
+        }else{
+
         }
-        if (binding.alturaEditText.text.toString().isEmpty()) {
-            binding.alturaTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.alturaTextField.error = null
+        if (fechaNacimientoEditText.text.toString().isNotEmpty()){
             i++
+        }else{
+
         }
-        if (binding.pesoEditText.text.toString().isEmpty()) {
-            binding.pesoTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.pesoTextField.error = null
+        if (alturaEditText.text.toString().isNotEmpty()){
             i++
+        }else{
+
         }
-        if (binding.autoCompleteTextView.text.toString().isEmpty()) {
-            binding.sexoTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.sexoTextField.error = null
+        if (pesoEditText.text.toString().isNotEmpty()){
             i++
+        }else{
+
         }
-        if (binding.alergiasEditText.text.toString().isEmpty()) {
-            binding.alergiasTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.alergiasTextField.error = null
+        if (sexoAutoCompleteTextView.text.toString().isNotEmpty()){
             i++
+        }else{
+
         }
-        if (binding.padecimientosEditText.text.toString().isEmpty()) {
-            binding.padecimientosTextField.error = "El campo no puede estar vacio"
-        } else {
-            binding.padecimientosTextField.error = null
+        if (sangreAutoCompleteTextView.text.toString().isNotEmpty()){
             i++
+        }else{
+
         }
         return i == 6
+    }
+
+    /*private fun iniciarActivityNueva(){
+        val intent = Intent(this,)
     }
 
     //Se obtenienen los datos de los campos y se mandan a la función del registro
@@ -142,7 +161,7 @@ class AgregarSaludActivity : AppCompatActivity() {
         insertaDB(paciente, curp, uri)
 
     }
-    
+
     //Función para registrar los datos en la base de datos remota
     private fun insertaDB(paciente: Map<String, Any>, curp: String, uri: String) {
         db.collection("users")
@@ -168,5 +187,5 @@ class AgregarSaludActivity : AppCompatActivity() {
 
             }
 
-    }
+    }*/
 }

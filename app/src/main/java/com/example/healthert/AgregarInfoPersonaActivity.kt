@@ -69,7 +69,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
                 val esPaciente = intent.getBooleanExtra("esPaciente", false)
                 var intent = Intent(this, AgregarInfoContacto::class.java)
                 if (esPaciente) {
-                    intent = Intent(this, AgregarSaludActivity::class.java)
+                    intent = Intent(this, AgregarSaludBasicaActivity::class.java)
                 }
                 intent.putExtra("email", getIntent().getStringExtra("email"))
                 intent.putExtra("password", getIntent().getStringExtra("password"))

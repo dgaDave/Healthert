@@ -189,6 +189,8 @@
 
 
             <Button
+                style="@style/Widget.Material3.Button"
+                android:textSize="20sp"
                 android:id="@+id/continuarButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

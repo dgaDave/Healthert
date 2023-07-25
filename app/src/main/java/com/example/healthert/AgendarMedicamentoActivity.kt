@@ -51,25 +51,21 @@ class AgendarMedicamentoActivity : AppCompatActivity() {
 
         //Date picker (Fecha)
         datePicker = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
-            // Lógica a realizar cuando se selecciona una fecha
-            // Aquí puedes usar las variables year, monthOfYear y dayOfMonth para obtener la fecha seleccionada
             val selectedDate = Calendar.getInstance()
             selectedDate.set(Calendar.YEAR, year)
             selectedDate.set(Calendar.MONTH, monthOfYear)
             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            // Realiza la lógica adicional que desees con la fecha seleccionada
-            // ...
-
             // Actualiza el texto del EditText con la fecha seleccionada
             val formattedDate = formatDate(selectedDate) // Función auxiliar para formatear la fecha
             diaInicioEditText.setText(formattedDate)
         }, currentYear, currentMonth, currentDay)
+
         datePicker.datePicker.minDate = calendar.timeInMillis
 
         timePicker = TimePickerDialog(
             this,
-            TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+            { _, selectedHour, selectedMinute ->
                 val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                 horaInicioEditText.setText(selectedTime)
             },
@@ -237,7 +233,6 @@ class AgendarMedicamentoActivity : AppCompatActivity() {
 
     private fun formatDate(calendar: Calendar): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
         return dateFormat.format(calendar.time)
     }
 }

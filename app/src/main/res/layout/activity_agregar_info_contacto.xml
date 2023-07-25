@@ -159,7 +159,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="50dp"
             android:padding="15dp"
-            android:text="FINALIZAR"
+            android:text="Finalizar"
             tools:ignore="VisualLintButtonSize" />
 
 

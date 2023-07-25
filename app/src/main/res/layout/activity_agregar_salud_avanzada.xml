@@ -57,8 +57,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal"
+                android:checkedButton="@id/seguroRadioButton2"
                 >
                 <RadioButton
+                    android:id="@+id/seguroRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Si"
@@ -66,6 +68,7 @@
                     android:layout_marginEnd="20dp"
                     />
                 <RadioButton
+                    android:id="@+id/seguroRadioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No"
@@ -107,8 +110,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal"
+                android:checkedButton="@id/alergiasRadioButton2"
                 >
                 <RadioButton
+                    android:id="@+id/alergiasRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Si"
@@ -116,6 +121,7 @@
                     android:layout_marginEnd="20dp"
                     />
                 <RadioButton
+                    android:id="@+id/alergiasRadioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No"
@@ -158,8 +164,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal"
+                android:checkedButton="@id/padecimientosRadioButton2"
                 >
                 <RadioButton
+                    android:id="@+id/padecimientosRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Si"
@@ -167,6 +175,7 @@
                     android:layout_marginEnd="20dp"
                     />
                 <RadioButton
+                    android:id="@+id/padecimientosRadioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No"
@@ -205,7 +214,7 @@
                 android:layout_marginRight="50dp"
                 android:layout_marginBottom="16dp"
                 android:padding="15dp"
-                android:text="Continuar"
+                android:text="Registrar"
                 tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>

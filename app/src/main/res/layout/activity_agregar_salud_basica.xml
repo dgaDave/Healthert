@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@id/tuSaludTextView">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/curpTextField"
+                android:id="@+id/curpTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fechaNacimientoTextField"
+                    android:id="@+id/fechaNacimientoTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -84,11 +84,16 @@
                         android:id="@+id/fechaNacimientoEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date"/>
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:clickable="true"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/edadTextView"
                     android:layout_height="wrap_content"
                     android:text="Edad"
                     android:layout_marginStart="24dp"
@@ -107,7 +112,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/alturaTextField"
+                    android:id="@+id/alturaTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_height="wrap_content"
                     android:hint="Altura"
@@ -127,7 +132,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/pesoTextField"
+                    android:id="@+id/pesoTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -153,7 +158,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/sexoTextField"
+                    android:id="@+id/sexoTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -172,7 +177,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/sangreTextField"
+                    android:id="@+id/sangreTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

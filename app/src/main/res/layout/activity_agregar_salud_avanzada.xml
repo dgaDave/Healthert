@@ -42,151 +42,158 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tuSaludTextView">
 
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:text="¿Tiene seguro?"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Si"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="20dp"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="20sp"
+                    />
+            </RadioGroup>
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/curpTextField"
+                android:id="@+id/numeroSeguroTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:hint="CURP"
-                app:counterEnabled="true"
-                app:counterMaxLength="18"
+                android:hint="Numero de Seguro"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@null">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/curpEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLength="18" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="25dp"
+                app:errorIconDrawable="@null"
+                android:visibility="gone"
                 >
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fechaNacimientoTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_weight="1"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/numeroSeguroEditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de Nacimiento"
-                    app:errorEnabled="true"
-                    app:errorIconDrawable="@null">
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fechaNacimientoEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="date"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:text="¿Tiene alergias?"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textview.MaterialTextView
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edad"
-                    android:layout_marginStart="24dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_width="0dp"
-                    android:visibility="gone"
+                    android:text="Si"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="20dp"
                     />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="20sp"
+                    />
+            </RadioGroup>
 
-            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/alergiasTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:hint="Alergias"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:helperText="Separe cada alergia con una coma."
+                android:visibility="gone"
+                >
 
-            <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/alergiasEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
-                android:orientation="horizontal">
+                android:text="¿Tiene padecimientos?"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/alturaTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_height="wrap_content"
-                    android:hint="Altura"
-                    android:layout_weight="1"
-                    app:errorEnabled="true"
-                    android:layout_marginEnd="24dp"
-                    app:errorIconDrawable="@null"
-                    app:suffixText="cm.">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/alturaEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="3" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/pesoTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="Peso"
-                    app:errorEnabled="true"
-                    app:errorIconDrawable="@null"
-                    app:suffixText="kg.">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/pesoEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/sexoTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="24dp"
-                    android:hint="Sexo"
-                    app:errorEnabled="true"
-                    app:errorIconDrawable="@null">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/sexosAutoCompleteTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/sangreTextField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:text="Si"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="20dp"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Gpo. Sang."
-                    app:errorEnabled="true"
-                    app:errorIconDrawable="@null">
+                    android:text="No"
+                    android:textSize="20sp"
+                    />
+            </RadioGroup>
 
-                    <AutoCompleteTextView
-                        android:id="@+id/sangreAutoCompleteTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/padecimientosTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:hint="Alergias"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:helperText="Separe cada padecimiento con una coma."
+                android:visibility="gone"
+                >
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/padecimientosEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 style="@style/Widget.Material3.Button"

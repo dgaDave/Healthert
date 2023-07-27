@@ -16,16 +16,32 @@
             >
 
 
-            <TextView
-                android:id="@+id/cuentanosTexto"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:text="@string/cuentanos_m_s"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="12dp"
+                >
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/logo1"
+                    android:layout_marginEnd="12dp"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Informacion basica"
+                    android:textSize="34sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

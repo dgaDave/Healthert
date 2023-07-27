@@ -8,215 +8,209 @@
     tools:context=".AgregarSaludAvanzadaActivity">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo1" />
-
-        <TextView
-            android:id="@+id/tuSaludTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Tú salud"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView2" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tuSaludTextView">
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginVertical="12dp"
+            >
 
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:text="¿Tiene seguro?"
-                android:textSize="24sp"
-                android:textStyle="bold"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/logo1"
+                android:layout_marginEnd="12dp"
+                android:layout_gravity="center"
                 />
 
-            <RadioGroup
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tuSaludTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:orientation="horizontal"
-                android:checkedButton="@id/seguroRadioButton2"
-                >
-                <RadioButton
-                    android:id="@+id/seguroRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Si"
-                    android:textSize="20sp"
-                    android:layout_marginEnd="20dp"
-                    />
-                <RadioButton
-                    android:id="@+id/seguroRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:textSize="20sp"
-                    />
-            </RadioGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/numeroSeguroTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:hint="Numero de Seguro"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                android:visibility="gone"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/numeroSeguroEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:text="¿Tiene alergias?"
-                android:textSize="24sp"
+                android:gravity="start"
+                android:text="Salud avanzada"
+                android:textSize="40sp"
                 android:textStyle="bold"
+                android:layout_gravity="center"
                 />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:orientation="horizontal"
-                android:checkedButton="@id/alergiasRadioButton2"
-                >
-                <RadioButton
-                    android:id="@+id/alergiasRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Si"
-                    android:textSize="20sp"
-                    android:layout_marginEnd="20dp"
-                    />
-                <RadioButton
-                    android:id="@+id/alergiasRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:textSize="20sp"
-                    />
-            </RadioGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/alergiasTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:hint="Alergias"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                app:helperText="Separe cada alergia con una coma."
-                android:visibility="gone"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/alergiasEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:text="¿Tiene padecimientos?"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:orientation="horizontal"
-                android:checkedButton="@id/padecimientosRadioButton2"
-                >
-                <RadioButton
-                    android:id="@+id/padecimientosRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Si"
-                    android:textSize="20sp"
-                    android:layout_marginEnd="20dp"
-                    />
-                <RadioButton
-                    android:id="@+id/padecimientosRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:textSize="20sp"
-                    />
-            </RadioGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/padecimientosTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:hint="Alergias"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                app:helperText="Separe cada padecimiento con una coma."
-                android:visibility="gone"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/padecimientosEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                style="@style/Widget.Material3.Button"
-                android:textSize="20sp"
-                android:id="@+id/continuarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginBottom="16dp"
-                android:padding="15dp"
-                android:text="Registrar"
-                tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:text="¿Tiene seguro?"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:checkedButton="@id/seguroRadioButton2"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/seguroRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Si"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/seguroRadioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textSize="20sp" />
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/numeroSeguroTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:hint="Numero de Seguro"
+            android:visibility="gone"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/numeroSeguroEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:text="¿Tiene alergias?"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:checkedButton="@id/alergiasRadioButton2"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/alergiasRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Si"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/alergiasRadioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textSize="20sp" />
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alergiasTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:hint="Alergias"
+            android:visibility="gone"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
+            app:helperText="Separe cada alergia con una coma.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alergiasEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:text="¿Tiene padecimientos?"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:checkedButton="@id/padecimientosRadioButton2"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/padecimientosRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Si"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/padecimientosRadioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textSize="20sp" />
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/padecimientosTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:hint="Alergias"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
+            app:helperText="Separe cada padecimiento con una coma.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/padecimientosEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/continuarButton"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="16dp"
+            android:padding="15dp"
+            android:text="Registrar"
+            android:layout_gravity="bottom"
+            android:textSize="20sp"
+            tools:ignore="VisualLintButtonSize" />
+
+    </LinearLayout>
 </ScrollView>

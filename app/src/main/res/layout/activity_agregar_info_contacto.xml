@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="Contacto"
+                android:text="@string/Contacto"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
@@ -169,7 +169,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="50dp"
             android:padding="15dp"
-            android:text="Finalizar"
+            android:text="@string/finalizar"
             tools:ignore="VisualLintButtonSize" />
 
 

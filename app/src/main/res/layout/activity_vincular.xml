@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Vincula tu smartwatch"
+        android:text="@string/vincula_tu_smartwatch"
         android:textSize="40sp"
         android:textStyle="bold" />
 
@@ -33,14 +33,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:text="Para poder recibir los datos de tu paciente, se necesita tener un smartwatch vinculado con el, escribe el siguiente codigo en tu aplicacion del smartwatch:"
+        android:text="@string/para_poder_recibir_los_datos_de_tu_paciente_se_necesita_tener_un_smartwatch_vinculado_con_el_escribe_el_siguiente_codigo_en_tu_aplicacion_del_smartwatch"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/codigoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ABCDEF"
+        android:text="@string/abcdef"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="50sp"

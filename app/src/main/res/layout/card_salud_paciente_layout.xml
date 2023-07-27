@@ -80,7 +80,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:text="Oscar David Gonzalez Avila"
+                    android:text="@string/oscar_david_gonzalez_avila"
                     android:textSize="28sp"
                     android:textStyle="bold"
                     app:flow_horizontalBias=".5"
@@ -120,7 +120,7 @@
                         android:gravity="center"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="GOAO020425HMNNVSA9"
+                        android:text="@string/goao020425hmnnvsa9"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -160,7 +160,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="190cm"
+                        android:text="@string/_190cm"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -170,7 +170,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="90kg"
+                        android:text="@string/_90kg"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -180,7 +180,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="21 años"
+                        android:text="@string/_21_a_os"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -198,7 +198,7 @@
                         android:gravity="start"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Padece de:"
+                        android:text="@string/padece_de"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -209,7 +209,7 @@
                         android:gravity="start"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Hipertensión, hipertiroidismo, vias respiratorias."
+                        android:text="@string/hipertensi_n_hipertiroidismo_vias_respiratorias"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -227,7 +227,7 @@
                         android:gravity="start"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Alergico a:"
+                        android:text="@string/alergico_a"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -238,7 +238,7 @@
                         android:gravity="start"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Polvo, humo, fluoxetina."
+                        android:text="@string/polvo_humo_fluoxetina"
                         android:textSize="18sp"
                         android:layout_marginBottom="6dp"
                         />
@@ -250,7 +250,7 @@
                     android:gravity="center"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="Tratamientos"
+                    android:text="@string/tratamientos"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"

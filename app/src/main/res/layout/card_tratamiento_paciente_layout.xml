@@ -22,7 +22,7 @@
             android:gravity="start"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Paracetamol 250mg "
+            android:text="@string/paracetamol_250mg"
             android:textSize="20sp"
             android:textStyle="bold" />
         <TextView
@@ -33,7 +33,7 @@
             android:gravity="start"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="1 pastilla cada 8 horas"
+            android:text="@string/_1_pastilla_cada_8_horas"
             android:textSize="20sp" />
         <TextView
             android:id="@+id/fechasTextView"
@@ -43,7 +43,7 @@
             android:gravity="start"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Fecha de Inicio Fecha Final"
+            android:text="@string/fecha_de_inicio_fecha_final"
             android:textSize="20sp"
             android:layout_marginBottom="6dp"/>
     </LinearLayout>

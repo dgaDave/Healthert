@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="Salud avanzada"
+                android:text="@string/salud_avanzada"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
-            android:text="¿Tiene seguro?"
+            android:text="@string/tiene_seguro"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -65,14 +65,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:text="Si"
+                android:text="@string/si"
                 android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/seguroRadioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No"
+                android:text="@string/no"
                 android:textSize="20sp" />
         </RadioGroup>
 
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
-            android:text="¿Tiene alergias?"
+            android:text="@string/tiene_alergias"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -115,14 +115,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:text="Si"
+                android:text="@string/Si"
                 android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/alergiasRadioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No"
+                android:text="@string/No"
                 android:textSize="20sp" />
         </RadioGroup>
 
@@ -150,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
-            android:text="¿Tiene padecimientos?"
+            android:text="@string/tiene_padecimientos"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -166,14 +166,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:text="Si"
+                android:text="@string/Si_"
                 android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/padecimientosRadioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No"
+                android:text="@string/No_"
                 android:textSize="20sp" />
         </RadioGroup>
 
@@ -207,7 +207,7 @@
             android:layout_marginRight="50dp"
             android:layout_marginBottom="16dp"
             android:padding="15dp"
-            android:text="Registrar"
+            android:text="@string/registrar"
             android:layout_gravity="bottom"
             android:textSize="20sp"
             tools:ignore="VisualLintButtonSize" />

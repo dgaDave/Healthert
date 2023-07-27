@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/imageView"
-            android:text="Nombre del paciente"
+            android:text="@string/nombre_del_paciente"
             android:textSize="15sp" />
 
         <ImageView
@@ -64,7 +64,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="11dp"
             android:layout_toEndOf="@id/corazonImageView"
-            android:text="BPM: "
+            android:text="@string/bpm"
             android:textSize="15sp" />
 
 

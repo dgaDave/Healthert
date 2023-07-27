@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="Salud basica"
+                    android:text="@string/salud_basica"
                     android:textSize="40sp"
                     android:textStyle="bold"
                     android:layout_gravity="center"
@@ -95,7 +95,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/edadTextView"
                     android:layout_height="wrap_content"
-                    android:text="Edad"
+                    android:text="@string/Edad"
                     android:layout_marginStart="24dp"
                     android:layout_weight="1"
                     android:textSize="18sp"
@@ -208,7 +208,7 @@
                 android:layout_marginRight="50dp"
                 android:layout_marginBottom="16dp"
                 android:padding="15dp"
-                android:text="Continuar"
+                android:text="@string/Continuar"
                 tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>

@@ -40,7 +40,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:gravity="center"
-            android:text="Nombre usuario"
+            android:text="@string/nombre_usuario"
             android:textSize="20sp" />
 
         <com.google.android.material.card.MaterialCardView
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Ajustes de usuario"
+                    android:text="@string/ajustes_de_usuario"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Preferencias"
+                    android:text="@string/preferencias"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Salir del perfil"
+                    android:text="@string/salir_del_perfil"
                     android:textSize="20sp" />
 
             </LinearLayout>

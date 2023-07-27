@@ -23,7 +23,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:gravity="center"
-            android:text="Healthert"
+            android:text="@string/healthert"
             android:textSize="50sp"
             android:textStyle="bold" />
 

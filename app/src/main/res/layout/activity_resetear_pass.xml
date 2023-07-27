@@ -65,7 +65,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:padding="15dp"
-                android:text="Enviar correo"
+                android:text="@string/enviar_correo"
                 tools:ignore="VisualLintButtonSize" />
 
 

@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetData"
+    style="@style/Widget.Healthert.AppWidget.Container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:orientation="vertical"
+    android:theme="@style/Theme.Healthert.AppWidgetContainer">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:focusable="true"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="90dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:background="@color/primario"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_person_24"
+           />
+
+        <TextView
+            android:id="@+id/nombrePacienteTv"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/imageView"
+            android:text="Nombre del paciente"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/corazonIv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/nombrePacienteTv"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/imageView"
+            android:src="@drawable/logo1"
+
+            />
+
+        <TextView
+            android:id="@+id/ritmoCardiaco2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nombrePacienteTv"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="11dp"
+            android:layout_toEndOf="@id/corazonIv"
+            android:text="BPM: "
+            android:textSize="15sp" />
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

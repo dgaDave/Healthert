@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="WidgetStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/app_widget_background</item>
+        <!-- Otros atributos -->
+    </style>
+</resources>

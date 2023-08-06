@@ -32,6 +32,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
     private lateinit var numeroSeguroEditText: EditText
     private lateinit var alergiasEditText: EditText
     private lateinit var padecimientosEditText: EditText
+    private lateinit var registrarButton: Button
     private val db = Firebase.firestore
     private var storageRef = Firebase.storage.reference
 
@@ -49,6 +50,8 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         numeroSeguroEditText = binding.numeroSeguroEditText
         alergiasEditText = binding.alergiasEditText
         padecimientosEditText = binding.padecimientosEditText
+
+        registrarButton = binding.registrarButton
 
         seguroRadioButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -74,7 +77,15 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             }
         }
 
+        registrarButton.setOnClickListener {
+            registrarUsuario()
+        }
+
         setContentView(binding.root)
+    }
+
+    private fun registrarUsuario() {
+
     }
 
 

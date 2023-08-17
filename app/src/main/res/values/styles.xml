@@ -2,12 +2,19 @@
 
     <style name="Widget.Healthert.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@color/cardview_light_background</item>
+        <item name="android:background">@color/cardview_light_background</item>
     </style>
 
     <style name="Widget.Healthert.AppWidget.InnerView" parent="android:Widget">
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
+    <style name="WidgetStyle2">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
+        <!-- Otros atributos de estilo -->
+    </style>
+
 </resources>

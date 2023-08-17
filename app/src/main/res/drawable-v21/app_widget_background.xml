@@ -4,7 +4,10 @@ appWidgetRadius attribute value
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+    <stroke
+        android:width="2dp"
+        android:color="@color/verde" />
 
     <corners android:radius="?attr/appWidgetRadius" />
-    <solid android:color="?android:attr/colorBackground" />
+    <solid android:color="@color/verde_card" />
 </shape>

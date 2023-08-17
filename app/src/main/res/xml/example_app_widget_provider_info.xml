@@ -3,7 +3,7 @@
     android:description="@string/app_widget_description"
 
     android:minWidth="300dp"
-    android:minHeight="120dp"
+    android:minHeight="100dp"
     android:previewImage="@drawable/example_appwidget_preview2"
 
     android:resizeMode="horizontal|vertical"

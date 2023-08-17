@@ -21,7 +21,8 @@ class WidgetProvider : AppWidgetProvider() {
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             val clickPendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            iniciaViews(context,serviceIntent,appWidgetId,clickPendingIntent,appWidgetManager,)
+            iniciaViews(context,serviceIntent,appWidgetId,clickPendingIntent,appWidgetManager)
+
         }
     }
 

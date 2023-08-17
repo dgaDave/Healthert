@@ -4,6 +4,8 @@
         <item name="android:id">@android:id/background</item>
         <item name="android:padding">?attr/appWidgetPadding</item>
         <item name="android:background">@drawable/app_widget_background</item>
+        <item name="android:textColor">@color/black</item>
+
     </style>
 
     <style name="Widget.Healthert.AppWidget.InnerView" parent="android:Widget">

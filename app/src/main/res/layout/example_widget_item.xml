@@ -8,28 +8,31 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:orientation="vertical"
-    android:theme="@style/Theme.Healthert.AppWidgetContainer">
+    android:theme="@style/Theme.Healthert.AppWidgetContainer"
+   >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="94dp"
         android:focusable="true"
-        android:padding="10dp">
+        android:padding="10dp"
+       >
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="90dp"
+            android:background="@drawable/circle_background"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="10dp"
-            android:background="@color/primario"
             android:padding="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/baseline_person_24"
            />
 
         <TextView
+            android:textColor="@color/dark_gris"
             android:id="@+id/nombrePacienteTv"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -51,6 +54,7 @@
 
         <TextView
             android:id="@+id/ritmoCardiaco2"
+            android:textColor="@color/dark_gris"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nombrePacienteTv"

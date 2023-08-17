@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.os.SystemClock
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -27,11 +31,14 @@ class WidgetService : RemoteViewsService() {
     private var db = Firebase.database.reference.child("medicionTr")
     val uid = FirebaseAuth.getInstance().uid.toString()
     private var storageRef = Firebase.storage.reference
-
     private var exampleData = ArrayList<String>()
     private var curpData = ArrayList<String>()
     private var bitmapLista = ArrayList<Bitmap>()
     private var pulsoPaciente= ArrayList<String>()
+
+
+
+
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         return ExampleWidgetItemFactory(applicationContext, intent)
@@ -48,6 +55,7 @@ class WidgetService : RemoteViewsService() {
             )
 
         }
+
 
         override fun onCreate() {
             //connect to data source
@@ -75,7 +83,7 @@ class WidgetService : RemoteViewsService() {
             val views = RemoteViews(context.packageName, R.layout.example_widget_item)
             if (exampleData.isNotEmpty()  && bitmapLista.isNotEmpty()) {
                 views.setTextViewText(R.id.nombrePacienteTv, exampleData[position])
-                views.setImageViewBitmap(R.id.imageView,bitmapLista[position])
+                views.setImageViewBitmap(R.id.imageView, RedondeaBitmap(bitmapLista[position]))
                 views.setTextViewText(R.id.ritmoCardiaco2,"BPM: ${pulsoPaciente[position]}")
                 val fillIntent = Intent()
                 fillIntent.putExtra(EXTRA_ITEM_POSITION, position)
@@ -128,20 +136,43 @@ class WidgetService : RemoteViewsService() {
         dataCurp
     }
 //Función para consultar las imagenes
-   private suspend fun consultaBitmap():ArrayList<Bitmap> = withContext(Dispatchers.IO) {
+    private suspend fun consultaBitmap(): ArrayList<Bitmap> = withContext(Dispatchers.IO) {
         val bitmapList = ArrayList<Bitmap>()
+        val customWidth = 230
+        val customHeight = 180
+
         for (curp in curpData) {
             val userRef = storageRef.child("images/$uid$curp")
             try {
                 val bytes = userRef.getBytes(Long.MAX_VALUE).await()
-                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                bitmapList.add(bitmap)
+                val originalBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                val resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, customWidth, customHeight, false)
+                bitmapList.add(resizedBitmap)
             } catch (e: Exception) {
-               //error
+                // Manejar el error
             }
         }
         bitmapList
     }
+//Función para redondear las imagenes
+    private fun RedondeaBitmap(bitmap: Bitmap): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+
+        val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(outputBitmap)
+        val paint = Paint()
+
+        paint.isAntiAlias = true
+        // Dibuja un círculo como máscara
+        canvas.drawCircle(width / 2.toFloat(), height / 2.toFloat(), width.coerceAtMost(height) / 2.toFloat(), paint)
+        // Establece el modo de pintura para que solo muestre la intersección del círculo y el bitmap
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        // Dibuja el bitmap en la región del círculo
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+        return outputBitmap
+    }
+
 
 ///Función para consultar el ritmo cardicaco
     private suspend fun consultaPulso(): ArrayList<String> = withContext(Dispatchers.IO) {
@@ -167,12 +198,7 @@ class WidgetService : RemoteViewsService() {
         exampleData = consultaPacientes()
         bitmapLista = consultaBitmap()
         pulsoPaciente=consultaPulso()
-
     }
-
-
-
-
 }
 
 

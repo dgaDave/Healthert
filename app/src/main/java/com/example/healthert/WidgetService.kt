@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.os.Handler
 import android.os.SystemClock
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -60,7 +61,18 @@ class WidgetService : RemoteViewsService() {
         override fun onCreate() {
             //connect to data source
             SystemClock.sleep(1000)
+            val handler = Handler()
+            val runnable = object : Runnable {
+                override fun run() {
+                    // Notifica la actualización
+                    val appWidgetManager = AppWidgetManager.getInstance(context)
+                    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.example_widget_stack_view)
+                    handler.postDelayed(this, 2000)
+                }
+            }
 
+            // Start the periodic update
+            handler.postDelayed(runnable, 2000)
         }
 
         override fun onDataSetChanged() {

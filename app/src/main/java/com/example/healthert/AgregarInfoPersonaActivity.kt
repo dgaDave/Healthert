@@ -20,7 +20,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private lateinit var apellidoM: EditText
     private lateinit var seguirB: Button
     private lateinit var imageView: ImageView
-    private lateinit var uriString: String
+    private var uriString: String? = null
     private val usuarios = Firebase.firestore.collection("users")
     private val storageRef = Firebase.storage.reference
     private lateinit var binding: ActivityAgregarInfoBinding
@@ -92,7 +92,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     private fun validarInfo(): Boolean {
         return (nombre.text.toString().isNotEmpty() && apellidoP.text.toString()
             .isNotEmpty() && apellidoM.text.toString()
-            .isNotEmpty() && uriString.isNotEmpty())
+            .isNotEmpty() && !uriString.isNullOrEmpty())
     }
 
     private fun abrirPickMedia() {

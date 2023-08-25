@@ -174,8 +174,6 @@ class AgregarSaludBasicaActivity : AppCompatActivity() {
         intent.putExtra("peso", pesoEditText.text.toString())
         intent.putExtra("sexo", sexoAutoCompleteTextView.text.toString())
         intent.putExtra("grupoSanguineo", sangreAutoCompleteTextView.text.toString())
-        intent.putExtra("email", getIntent().getStringExtra("email"))
-        intent.putExtra("password", getIntent().getStringExtra("password"))
         intent.putExtra("nombre", getIntent().getStringExtra("nombre") )
         intent.putExtra("apellidoP", getIntent().getStringExtra("apellidoP"))
         intent.putExtra("apellidoM", getIntent().getStringExtra("apellidoM"))

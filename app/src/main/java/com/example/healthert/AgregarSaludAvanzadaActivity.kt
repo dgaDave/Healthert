@@ -35,6 +35,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
     private lateinit var registrarButton: Button
     private val db = Firebase.firestore
     private var storageRef = Firebase.storage.reference
+    private val uid = FirebaseAuth.getInstance().uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +59,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 numeroSeguroTextInputLayout.visibility = View.VISIBLE
             } else {
                 numeroSeguroTextInputLayout.visibility = View.GONE
+                numeroSeguroEditText.text = null
             }
         }
 
@@ -66,6 +68,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 alergiasTextInputLayout.visibility = View.VISIBLE
             } else {
                 alergiasTextInputLayout.visibility = View.GONE
+                numeroSeguroEditText.text = null
             }
         }
 
@@ -74,17 +77,89 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 padecimientosTextInputLayout.visibility = View.VISIBLE
             } else {
                 padecimientosTextInputLayout.visibility = View.GONE
+                numeroSeguroEditText.text = null
             }
         }
 
         registrarButton.setOnClickListener {
-            registrarUsuario()
+            registrarUsuario(
+                intent.getStringExtra("nombre").toString(),
+                intent.getStringExtra("apellidoP").toString(),
+                intent.getStringExtra("apellidoM").toString(),
+                intent.getStringExtra("uri").toString(),
+                intent.getStringExtra("sexo").toString(),
+                intent.getStringExtra("grupoSanguineo").toString(),
+                intent.getStringExtra("curp").toString(),
+                intent.getStringExtra("fechaNacimiento").toString(),
+                intent.getStringExtra("altura").toString(),
+                intent.getStringExtra("peso").toString(),
+                numeroSeguroEditText.text.toString(),
+                alergiasEditText.text.toString(),
+                padecimientosEditText.text.toString()
+            )
         }
 
         setContentView(binding.root)
     }
 
-    private fun registrarUsuario() {
+    private fun registrarUsuario(
+        nombre: String,
+        apellidoP: String,
+        apellidoM: String,
+        uri: String,
+        sexo: String,
+        grupoSanguineo: String,
+        curp: String,
+        fechaNacimiento: String,
+        altura: String,
+        peso: String,
+        seguro: String,
+        alergias: String,
+        padecimientos: String
+    ) {
+        val nombrec = mapOf(
+            "nombres" to nombre,
+            "apellidoP" to apellidoP,
+            "apellidoM" to apellidoM
+        )
+
+        val paciente = mapOf(
+            "nombrec" to nombrec,
+            "sexo" to sexo,
+            "grupoSanguineo" to grupoSanguineo,
+            "curp" to curp,
+            "fechaNacimiento" to fechaNacimiento,
+            "altura" to altura,
+            "peso" to peso,
+            "seguro" to seguro,
+            "alergias" to alergias,
+            "padecimientos" to padecimientos
+        )
+
+        //Se sube la informacion
+        db.collection("users").document(uid.toString() + curp).set(paciente).addOnSuccessListener {
+
+            //Se sube la foto
+            val file = Uri.parse(uri)
+            val imgsRef =
+                storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString() + curp)
+            val uploadTask = imgsRef.putFile(file)
+
+            uploadTask
+                .addOnSuccessListener {
+                    //Mandamos a la actividad de vinculacion
+                    val intent = Intent(this, VincularActivity::class.java)
+                    intent.putExtra("documento", FirebaseAuth.getInstance().uid.toString() + curp)
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_SHORT).show()
+                }
+
+        }.addOnFailureListener {
+            Toast.makeText(this,"No se pudo registrar los datos del paciente",Toast.LENGTH_SHORT).show()
+        }
 
     }
 

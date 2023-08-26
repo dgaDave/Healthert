@@ -94,7 +94,8 @@ class PacientesSaludAdapter(
         val altura = pacientes[i].altura
         val curp = pacientes[i].curp
         //Se saca el calculo de la edad
-        val edad = ((System.currentTimeMillis() - pacientes[i].fechaNacimiento) / (365.25 * 24 * 60 * 60 * 1000)).toInt()
+        val edad =
+            ((System.currentTimeMillis() - pacientes[i].fechaNacimiento) / (365.25 * 24 * 60 * 60 * 1000)).toInt()
         val grupoSanguineo = pacientes[i].grupoSanguineo
         val padecimientos = pacientes[i].padecimientos
         val peso = pacientes[i].peso
@@ -163,10 +164,16 @@ class PacientesSaludAdapter(
         viewHolder.peso.text = "$peso kg"
         viewHolder.altura.text = "$altura cm"
         viewHolder.edad.text = "$edad años"
-        viewHolder.padecimientos.text = padecimientos
-        viewHolder.alergias.text = alergias
-
-
+        if (alergias.isNullOrEmpty()) {
+            viewHolder.alergias.text = "El paciente no tiene alergias"
+        } else {
+            viewHolder.alergias.text = alergias
+        }
+        if (padecimientos.isNullOrEmpty()) {
+            viewHolder.padecimientos.text = "El paciente no tiene padecimientos"
+        } else {
+            viewHolder.padecimientos.text = padecimientos
+        }
 
         viewHolder.floatingActionButtonAgendar.setOnClickListener {
             val agendar = Intent(context, AgendarMedicamentoActivity::class.java)

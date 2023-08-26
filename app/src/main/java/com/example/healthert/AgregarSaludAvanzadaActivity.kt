@@ -129,7 +129,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             "apellidoM" to apellidoM
         )
 
-        val paciente = mapOf(
+        val paciente = mutableMapOf(
             "nombrec" to nombrec,
             "sexo" to sexo,
             "grupoSanguineo" to grupoSanguineo,
@@ -137,11 +137,12 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             "fechaNacimiento" to fechaNacimiento,
             "altura" to altura,
             "peso" to peso,
-            "seguro" to seguro,
-            "alergias" to alergias,
-            "padecimientos" to padecimientos,
             "usuarioCuidador" to uid.toString()
         )
+
+        if(!seguro.isNullOrEmpty()) paciente["seguro"] = seguro
+        if(!alergias.isNullOrEmpty()) paciente["alergias"] = alergias
+        if(!padecimientos.isNullOrEmpty()) paciente["padecimientos"] = padecimientos
 
         //Se sube la informacion
         db.collection("users").document(uid.toString() + curp).set(paciente).addOnSuccessListener {

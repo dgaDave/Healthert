@@ -19,8 +19,8 @@
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:srcCompat="@drawable/logo1_sf" />
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/logo1" />
 
         <TextView
             android:id="@+id/instruccionTexto"
@@ -62,8 +62,7 @@
                 android:id="@+id/enviarCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginHorizontal="50dp"
                 android:padding="15dp"
                 android:text="Enviar correo"
                 tools:ignore="VisualLintButtonSize" />

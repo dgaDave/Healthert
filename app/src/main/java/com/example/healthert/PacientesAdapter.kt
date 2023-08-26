@@ -17,7 +17,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class PacientesAdapter(private val context:Context, private val uid:String,private val pacientes: List<Paciente>,private val fragment: Fragment) :RecyclerView.Adapter<PacientesAdapter.ViewHolder>(){
+class PacientesAdapter(private val context:Context, private val uid:String,private val pacientes: List<com.example.healthert.classes.Paciente>,private val fragment: Fragment) :RecyclerView.Adapter<PacientesAdapter.ViewHolder>(){
     private var storageRef = Firebase.storage.reference
     private var db = Firebase.database.reference.child("medicionTr")
 

@@ -36,7 +36,7 @@ import java.util.Calendar
 class PacientesSaludAdapter(
     private val context: Context,
     private val uid: String,
-    private val pacientes: List<Paciente>,
+    private val pacientes: List<com.example.healthert.classes.Paciente>,
     private val fragment: Fragment,
 ) :
     RecyclerView.Adapter<PacientesSaludAdapter.ViewHolder>() {
@@ -90,13 +90,17 @@ class PacientesSaludAdapter(
         val apellidoP = nombrec["apellidoP"]
         val apellidoM = nombrec["apellidoM"]
         val nombrecS = "$nombres $apellidoP $apellidoM"
-        val curp = pacientes[i].curp
-        val usuarioCuidador = pacientes[i].usuarioCuidador
-        val peso = pacientes[i].peso
-        val altura = pacientes[i].altura
-        val edad = pacientes[i].edad
-        val padecimientos = pacientes[i].padecimientos
         val alergias = pacientes[i].alergias
+        val altura = pacientes[i].altura
+        val curp = pacientes[i].curp
+        //Se saca el calculo de la edad
+        val edad = ((System.currentTimeMillis() - pacientes[i].fechaNacimiento) / (365.25 * 24 * 60 * 60 * 1000)).toInt()
+        val grupoSanguineo = pacientes[i].grupoSanguineo
+        val padecimientos = pacientes[i].padecimientos
+        val peso = pacientes[i].peso
+        val seguro = pacientes[i].seguro
+        val sexo = pacientes[i].sexo
+        val usuarioCuidador = pacientes[i].usuarioCuidador
         var adapter: TratamientosAdapter
         val tratamientos = mutableListOf<Tratamiento>()
         val alertas = mutableListOf<Alerta>()
@@ -130,15 +134,15 @@ class PacientesSaludAdapter(
 
         db.collection("alertas").whereEqualTo("usuarioCuidador", pacientes[i].usuarioCuidador)
             .get().addOnSuccessListener {
-            for (document in it) {
-                val alerta = document.toObject(Alerta::class.java)
-                alertas.add(alerta)
-            }
-                alertas.sortBy { o-> o.fechaLong }
-        }.addOnFailureListener {
-            Toast.makeText(context, "Valio verga", Toast.LENGTH_SHORT).show()
+                for (document in it) {
+                    val alerta = document.toObject(Alerta::class.java)
+                    alertas.add(alerta)
+                }
+                alertas.sortBy { o -> o.fechaLong }
+            }.addOnFailureListener {
+                Toast.makeText(context, "Valio verga", Toast.LENGTH_SHORT).show()
 
-        }
+            }
         db.collection("historial").whereEqualTo("paciente", "$usuarioCuidador$curp").get()
             .addOnSuccessListener {
 
@@ -146,10 +150,10 @@ class PacientesSaludAdapter(
                     val historial = document.toObject(Historial::class.java)
                     historiales.add(historial)
                 }
-                historiales.sortBy {o->  o.fechaLong }
+                historiales.sortBy { o -> o.fechaLong }
             }.addOnFailureListener {
 
-        }
+            }
 
 
         val userRef = storageRef.child("images/" + "$uid$curp")
@@ -205,9 +209,10 @@ class PacientesSaludAdapter(
                 Toast.makeText(context, "CARPETA CREADA", Toast.LENGTH_SHORT).show()
             }
 
-            val nombrepdf = "${SimpleDateFormat("ddMMyyyyHHss").format(Timestamp.now().toDate())}.pdf"
+            val nombrepdf =
+                "${SimpleDateFormat("ddMMyyyyHHss").format(Timestamp.now().toDate())}.pdf"
 
-             archivo = File(
+            archivo = File(
                 dir,
                 nombrepdf
             )
@@ -224,9 +229,10 @@ class PacientesSaludAdapter(
             documento.add(tituloFecha)
 
 
-            val image = Image.getInstance(drawableToBytes(context.getDrawable(R.drawable.logo_doc)!!))
+            val image =
+                Image.getInstance(drawableToBytes(context.getDrawable(R.drawable.logo_doc)!!))
 
-            image.scaleToFit(75f,75f)
+            image.scaleToFit(75f, 75f)
             image.alignment = Element.ALIGN_CENTER
 
             documento.add(image)
@@ -351,7 +357,6 @@ class PacientesSaludAdapter(
         }
 
 
-
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -366,6 +371,7 @@ class PacientesSaludAdapter(
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
     }
+
     override fun getItemCount(): Int {
         return pacientes.size
     }

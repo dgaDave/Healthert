@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.text.SimpleDateFormat
 
 
 class AgregarSaludAvanzadaActivity : AppCompatActivity() {
@@ -90,9 +91,9 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 intent.getStringExtra("sexo").toString(),
                 intent.getStringExtra("grupoSanguineo").toString(),
                 intent.getStringExtra("curp").toString(),
-                intent.getStringExtra("fechaNacimiento").toString(),
-                intent.getStringExtra("altura").toString(),
-                intent.getStringExtra("peso").toString(),
+                convertirFechaALong(intent.getStringExtra("fechaNacimiento").toString()),
+                intent.getStringExtra("altura").toString().toInt(),
+                intent.getStringExtra("peso").toString().toInt(),
                 numeroSeguroEditText.text.toString(),
                 alergiasEditText.text.toString(),
                 padecimientosEditText.text.toString()
@@ -100,6 +101,11 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun convertirFechaALong(fecha: String): Long {
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.parse(fecha).time
     }
 
     private fun registrarUsuario(
@@ -110,9 +116,9 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         sexo: String,
         grupoSanguineo: String,
         curp: String,
-        fechaNacimiento: String,
-        altura: String,
-        peso: String,
+        fechaNacimiento: Long,
+        altura: Int,
+        peso: Int,
         seguro: String,
         alergias: String,
         padecimientos: String
@@ -133,7 +139,8 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             "peso" to peso,
             "seguro" to seguro,
             "alergias" to alergias,
-            "padecimientos" to padecimientos
+            "padecimientos" to padecimientos,
+            "usuarioCuidador" to uid.toString()
         )
 
         //Se sube la informacion
@@ -154,11 +161,13 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                     finishAffinity()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
         }.addOnFailureListener {
-            Toast.makeText(this,"No se pudo registrar los datos del paciente",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No se pudo registrar los datos del paciente", Toast.LENGTH_SHORT)
+                .show()
         }
 
     }

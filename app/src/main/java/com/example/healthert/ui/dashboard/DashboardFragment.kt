@@ -37,7 +37,7 @@ class DashboardFragment : Fragment() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter1: PacientesAdapter
     private lateinit var adapter2: AgregarAdapter
-    private var pacientes = mutableListOf<Paciente>()
+    private var pacientes = mutableListOf<com.example.healthert.classes.Paciente>()
     private var idsPacientes: Array<String> = arrayOf()
     private val usuarios = Firebase.firestore.collection("users")
     private val markerList: MutableList<Marker> = mutableListOf()
@@ -57,7 +57,7 @@ class DashboardFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
 
-                    val paciente = document.toObject(Paciente::class.java)
+                    val paciente = document.toObject(com.example.healthert.classes.Paciente::class.java)
                     pacientes.add(paciente)
                     idsPacientes += uid + paciente.curp
                 }
@@ -216,7 +216,7 @@ class DashboardFragment : Fragment() {
 }
 
 data class Paciente(
-    val nombrec: HashMap<String, String> = hashMapOf(),
+    val nombrec: Map<String, String> = mapOf(),
     val apellidoP: String = "",
     val apellidoM: String = "",
     val usuarioCuidador: String = "",

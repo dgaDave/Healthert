@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,12 +25,11 @@ import com.google.firebase.storage.ktx.storage
 class NotificationsFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
-    private lateinit var salirCardView: CardView
+    private lateinit var cerrarSesionButton: Button
     private lateinit var nombreUsuarioTextView: TextView
     private lateinit var imgView: ImageView
-    private lateinit var ajustesUsuarioCardView: CardView
-
-    private lateinit var nombrec: HashMap<String, String>
+    private lateinit var ajustesUsuarioImageView: ImageView
+    private lateinit var nombrec: Map<String, String>
     private var storageRef = Firebase.storage.reference
     private val usuarios = Firebase.firestore.collection("users")
     private lateinit var sharedPreferences: SharedPreferences
@@ -49,21 +49,15 @@ class NotificationsFragment : Fragment() {
         //Bindear
         nombreUsuarioTextView = binding.nombreUsuarioTextview
         imgView = binding.imageView
-        salirCardView = binding.salirCardview
-        ajustesUsuarioCardView = binding.ajustesUsuarioCardView
+        cerrarSesionButton = binding.cerrarSesionButton
+        ajustesUsuarioImageView = binding.ajustesUsuarioImageView
 
         //Boton de ajustes del usuario
-        ajustesUsuarioCardView.setOnClickListener {
+        ajustesUsuarioImageView.setOnClickListener {
             val intent = Intent(activity,AgregarInfoPersonaActivity::class.java)
             intent.putExtra("estaModificando",true)
             startActivity(intent)
         }
-
-
-
-
-
-
 
         //Recuperar foto del usuario y guardar en cache
         val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
@@ -73,14 +67,13 @@ class NotificationsFragment : Fragment() {
         val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
         docRef.get().addOnSuccessListener { document ->
             nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
-            nombreUsuarioTextView.text =
-                nombrec["nombres"] + " " + nombrec["apellidoP"] + " " + nombrec["apellidoM"]
+            nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
         }.addOnFailureListener {
             Toast.makeText(context, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
         }
 
         //Evento para salir de la cuenta
-        salirCardView.setOnClickListener {
+        cerrarSesionButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             sharedPreferences.edit().remove("uid").apply()
             startActivity(Intent(context, LoginActivity::class.java))

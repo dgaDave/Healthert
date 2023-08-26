@@ -1,145 +1,334 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.NotificationsFragment"
-    android:id="@+id/containerNotifications"
-    >
+    android:fillViewport="true"
+    android:scrollbars="none"
+    tools:context=".ui.notifications.NotificationsFragment">
 
     <LinearLayout
-        android:id="@+id/linearNotifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@color/primario"
-            android:padding="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/baseline_person_24"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-            app:strokeWidth="5dp"
-            />
-
-        <TextView
-            android:id="@+id/nombreUsuarioTextview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="center"
-            android:text="Nombre usuario"
-            android:textSize="20sp" />
+            android:layout_height="70dp"
+            android:background="@color/primario">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageView"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:background="@color/primario"
+                android:scaleType="centerCrop"
+                android:src="@drawable/baseline_person_24"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                app:strokeWidth="0dp" />
+
+            <TextView
+                android:id="@+id/nombreUsuarioTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/imageView"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ajustesUsuarioImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="23dp"
+                android:clickable="true"
+                android:src="@drawable/ic_notifications_black_24dp"
+                app:tint="?android:colorBackground" />
+
+        </RelativeLayout>
+
+        <!-- <com.google.android.material.imageview.ShapeableImageView
+             android:layout_width="200dp"
+             android:layout_height="200dp"
+             android:layout_gravity="center"
+             android:layout_marginTop="20dp"
+             android:background="@color/primario"
+             android:padding="5dp"
+             android:scaleType="centerCrop"
+             android:src="@drawable/baseline_person_24"
+             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+             app:strokeWidth="5dp" />
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="20dp"
+             android:layout_marginTop="20dp"
+             android:layout_marginEnd="20dp"
+             android:gravity="center"
+             android:text="Nombre usuario"
+             android:textSize="20sp" />-->
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/ajustesUsuarioCardView"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
+            android:layout_height="120dp"
             android:clickable="true"
-            app:cardElevation="15dp"
-            android:fadingEdgeLength="10dp"
-            >
+            app:cardCornerRadius="0dp">
 
-            <LinearLayout
-                android:id="@+id/linear2Notifications"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textTituloAjustes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Ajustes del paciente"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textTituloAjustes"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Modifica, vincula, desvincula o elimina pacientes." />
+
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="51dp"
                     android:src="@drawable/ic_person"
-                    android:layout_marginEnd="20dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Ajustes de usuario"
-                    android:textSize="20sp" />
+                    app:tint="#A8A8A8" />
 
-            </LinearLayout>
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_next"
+                    app:tint="#A8A8A8" />
+
+
+            </RelativeLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
-            app:cardElevation="15dp"
-            android:clickable="true">
+            android:layout_height="150dp"
+            android:layout_marginVertical="1dp"
+            android:clickable="true"
+            app:cardCornerRadius="0dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_prefs"
-                    android:layout_marginEnd="20dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Preferencias"
-                    android:textSize="20sp" />
+                android:layout_height="match_parent">
 
-            </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textTituloPlan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Informacion del plan"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textTextoInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textTituloPlan"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Mejora tu cuenta para acceder a mejores funciones!" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textPlanContratado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textTextoInfo"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Plan contratado"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textPlanContratado"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Proxima fecha de pago: -------" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_next"
+                    app:tint="#A8A8A8" />
+
+
+            </RelativeLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:id="@+id/salirCardview"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
-            app:cardElevation="15dp"
-            android:clickable="true">
+            android:layout_height="120dp"
+            android:layout_marginVertical="1dp"
+            android:clickable="true"
+            app:cardCornerRadius="0dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_salir"
-                    android:layout_marginEnd="20dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Salir del perfil"
-                    android:textSize="20sp" />
+                android:layout_height="match_parent">
 
-            </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textTituloAyuda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Ayuda"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textTituloAyuda"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Necesitas ayuda?, te ensenamos a usar la app." />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_next"
+                    app:tint="#A8A8A8" />
+
+
+            </RelativeLayout>
+
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginVertical="1dp"
+            android:clickable="true"
+            app:cardCornerRadius="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textTituloAcerca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Acerca de"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textTituloAcerca"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Conoce a nuestro equipo y contactanos" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_next"
+                    app:tint="#A8A8A8" />
+
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/cerrarSesionButton"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="56dp"
+                android:padding="15dp"
+                android:text="Cerrar sesion"
+                android:textColor="#FF00"
+                android:textSize="20sp"
+                app:rippleColor="#FF00"
+                tools:ignore="VisualLintButtonSize" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -215,19 +215,6 @@ class DashboardFragment : Fragment() {
 
 }
 
-data class Paciente(
-    val nombrec: Map<String, String> = mapOf(),
-    val apellidoP: String = "",
-    val apellidoM: String = "",
-    val usuarioCuidador: String = "",
-    val edad: Int = 0,
-    val altura: Int = 0,
-    val peso: Int = 0,
-    val sexo: String = "",
-    val alergias: String = "",
-    val padecimientos: String = "",
-    val curp: String = ""
-)
 fun isDarkTheme(context: Context): Boolean {
     val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     return currentNightMode == Configuration.UI_MODE_NIGHT_YES

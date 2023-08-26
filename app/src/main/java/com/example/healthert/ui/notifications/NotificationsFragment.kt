@@ -29,6 +29,10 @@ class NotificationsFragment : Fragment() {
     private lateinit var nombreUsuarioTextView: TextView
     private lateinit var imgView: ImageView
     private lateinit var ajustesUsuarioImageView: ImageView
+    private lateinit var ajustesPacienteCardView: CardView
+    private lateinit var informacionPlanCardView: CardView
+    private lateinit var ayudaCardView: CardView
+    private lateinit var acercaCardView: CardView
     private lateinit var nombrec: Map<String, String>
     private var storageRef = Firebase.storage.reference
     private val usuarios = Firebase.firestore.collection("users")
@@ -51,13 +55,10 @@ class NotificationsFragment : Fragment() {
         imgView = binding.imageView
         cerrarSesionButton = binding.cerrarSesionButton
         ajustesUsuarioImageView = binding.ajustesUsuarioImageView
-
-        //Boton de ajustes del usuario
-        ajustesUsuarioImageView.setOnClickListener {
-            val intent = Intent(activity,AgregarInfoPersonaActivity::class.java)
-            intent.putExtra("estaModificando",true)
-            startActivity(intent)
-        }
+        ajustesPacienteCardView = binding.ajustesPacienteCardView
+        informacionPlanCardView = binding.informacionPlanCardView
+        ayudaCardView = binding.ayudaCardView
+        acercaCardView = binding.acercaCardView
 
         //Recuperar foto del usuario y guardar en cache
         val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
@@ -70,6 +71,30 @@ class NotificationsFragment : Fragment() {
             nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
         }.addOnFailureListener {
             Toast.makeText(context, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
+        }
+
+        //Boton de ajustes del usuario
+        ajustesUsuarioImageView.setOnClickListener {
+            val intent = Intent(activity, AgregarInfoPersonaActivity::class.java)
+            intent.putExtra("estaModificando", true)
+            startActivity(intent)
+        }
+
+        //Boton de ajustes del paciente
+        ajustesPacienteCardView.setOnClickListener {
+            startActivity(Intent(requireContext(), AjustesPacientesActivity::class.java))
+        }
+
+        informacionPlanCardView.setOnClickListener {
+            //Activity informacion del plan
+        }
+
+        ayudaCardView.setOnClickListener {
+            //Activity para ayudar
+        }
+
+        acercaCardView.setOnClickListener {
+            //Activity para contactarnos
         }
 
         //Evento para salir de la cuenta

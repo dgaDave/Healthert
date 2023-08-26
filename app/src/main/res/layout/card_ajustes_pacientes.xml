@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="1dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/primario"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_person_24"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            app:strokeWidth="0dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nombrePacienteTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@id/imageView"
+            android:text="Nombre del paciente sssss"
+            android:textSize="18sp" />
+
+        <Button
+            style="@style/Widget.Material3.Button.Icon"
+            android:id="@+id/editarButton"
+            android:text="Editar"
+            android:textSize="12sp"
+            app:iconSize = "14sp"
+            app:iconPadding = "6dp"
+            android:layout_marginStart="-14dp"
+            app:icon ="@drawable/ic_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/nombrePacienteTextView"
+            android:layout_alignStart="@id/nombrePacienteTextView"
+            />
+        <Button
+            style="@style/Widget.Material3.Button.Icon"
+            android:id="@+id/vincularButton"
+            android:text="Desvincular"
+            app:iconSize = "14sp"
+            app:iconPadding = "6dp"
+            android:textSize="12sp"
+            app:icon ="@drawable/ic_watch"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/nombrePacienteTextView"
+            android:layout_toEndOf="@id/editarButton"
+            android:layout_marginStart="3dp"
+            />
+        <Button
+            style="@style/Widget.Material3.Button.Icon"
+            android:id="@+id/eliminarButton"
+            android:layout_marginStart="3dp"
+            android:backgroundTint="#FF00"
+            android:text="Eliminar"
+            app:iconSize = "14sp"
+            app:iconPadding = "6dp"
+            android:textSize="12sp"
+            app:icon ="@drawable/ic_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/nombrePacienteTextView"
+            android:layout_toEndOf="@id/vincularButton"
+            />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

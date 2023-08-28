@@ -10,5 +10,6 @@ data class Paciente(
     val peso : Int = 0,
     val seguro : String = "",
     val sexo : String = "",
-    val usuarioCuidador : String =""
+    val usuarioCuidador : String ="",
+    val codigo : String = ""
 )

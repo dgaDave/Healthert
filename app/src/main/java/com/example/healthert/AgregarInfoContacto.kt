@@ -6,14 +6,20 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.example.healthert.databinding.ActivityAgregarInfoContactoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 class AgregarInfoContacto : AppCompatActivity() {
@@ -28,7 +34,7 @@ class AgregarInfoContacto : AppCompatActivity() {
     private val db = Firebase.firestore
     private var storageRef = Firebase.storage.reference
     private lateinit var binding: ActivityAgregarInfoContactoBinding
-    private lateinit var sharedPreferences:SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,30 +53,39 @@ class AgregarInfoContacto : AppCompatActivity() {
         if (estaModificando) {
             db.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get()
                 .addOnSuccessListener { document ->
+                    val domicilio = document.get("domicilio") as Map<String, String>
                     telEditText.setText(document.get("telefono").toString())
+                    calleEditText.setText(domicilio["calle"])
+                    codigoPostalEditText.setText(domicilio["codigoPostal"])
+                    coloniaEditText.setText(domicilio["colonia"])
+                    municipioEditText.setText(domicilio["municipio"])
+                    estadoEditText.setText(domicilio["estado"])
                 }.addOnFailureListener {
-                    Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se pudo recuperar la informacion", Toast.LENGTH_LONG)
+                        .show()
                 }
         }
 
         //evento de registrar
         registrarBoton.setOnClickListener {
             if (validarDatos()) {
-                if (estaModificando){
-                    modificarUsuario(intent.getStringExtra("nombre")!!,
+                if (estaModificando) {
+                    modificarUsuario(
+                        intent.getStringExtra("nombre")!!,
                         intent.getStringExtra("apellidoP")!!,
                         intent.getStringExtra("apellidoM")!!,
                         intent.getStringExtra("uri")!!,
-                        telEditText.text.toString())
-                }else{
+                        telEditText.text.toString()
+                    )
+                } else {
                     setContentView(R.layout.loading_layout)
                     registrarUsuario(
                         intent.getStringExtra("email")!!,
                         intent.getStringExtra("password")!!,
                         mapOf(
-                                "nombres" to intent.getStringExtra("nombre")!!,
-                                "apellidoP" to intent.getStringExtra("apellidoP")!!,
-                                "apellidoM" to intent.getStringExtra("apellidoM")!!
+                            "nombres" to intent.getStringExtra("nombre")!!,
+                            "apellidoP" to intent.getStringExtra("apellidoP")!!,
+                            "apellidoM" to intent.getStringExtra("apellidoM")!!
                         ),
                         intent.getStringExtra("uri")!!,
                         telEditText.text.toString(),
@@ -92,54 +107,54 @@ class AgregarInfoContacto : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun validarDatos():Boolean{
+    private fun validarDatos(): Boolean {
         var i = 0
         //Validar telefono
-        if (telEditText.text.toString().isNotEmpty() && telEditText.text.length==10){
+        if (telEditText.text.toString().isNotEmpty() && telEditText.text.length == 10) {
             i++
-        }else{
+        } else {
 
         }
         //Validar calle
-        if (calleEditText.text.isNotEmpty()){
+        if (calleEditText.text.isNotEmpty()) {
             i++
-        }else{
+        } else {
 
         }
         //Validar codigo postal
-        if (codigoPostalEditText.text.isNotEmpty()){
+        if (codigoPostalEditText.text.isNotEmpty()) {
             i++
-        }else{
+        } else {
 
         }
         //Validar colonia
-        if (coloniaEditText.text.isNotEmpty()){
+        if (coloniaEditText.text.isNotEmpty()) {
             i++
-        }else{
+        } else {
 
         }
         //Validar municipio
-        if (municipioEditText.text.isNotEmpty()){
+        if (municipioEditText.text.isNotEmpty()) {
             i++
-        }else{
+        } else {
 
         }
         //Validar estado
-        if (estadoEditText.text.isNotEmpty()){
+        if (estadoEditText.text.isNotEmpty()) {
             i++
-        }else{
+        } else {
 
         }
-        return i==6
+        return i == 6
     }
 
     private fun registrarUsuario(
         email: String,
         password: String,
-        nombrec: Map<String,String>,
+        nombrec: Map<String, String>,
         uri: String,
         telefono: String,
-        domicilio: Map<String,String>
+        domicilio: Map<String, String>
     ) {
         //Registra en firebase auth
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -163,7 +178,9 @@ class AgregarInfoContacto : AppCompatActivity() {
                             uploadTask.addOnFailureListener {
                                 Toast.makeText(this, "Valio verga", Toast.LENGTH_LONG).show()
                             }.addOnSuccessListener {
-                                sharedPreferences.edit().putString("uid",FirebaseAuth.getInstance().uid.toString()).apply()
+                                sharedPreferences.edit()
+                                    .putString("uid", FirebaseAuth.getInstance().uid.toString())
+                                    .apply()
                                 startActivity(Intent(this, MainActivity2::class.java))
                                 finishAffinity()
                             }
@@ -183,7 +200,8 @@ class AgregarInfoContacto : AppCompatActivity() {
         apellidoP: String,
         apellidoM: String,
         uri: String,
-        telefono: String) {
+        telefono: String
+    ) {
         val nombrec = hashMapOf(
             "nombres" to nombre,
             "apellidoP" to apellidoP,
@@ -196,17 +214,39 @@ class AgregarInfoContacto : AppCompatActivity() {
         )
 
         //Registra datos en cloud
-        db.collection("users").document(FirebaseAuth.getInstance().uid.toString()).update(personaCuidadora).addOnSuccessListener {
-            val file = Uri.parse(uri)
-            val imgsRef =
-                storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
-            val uploadTask = imgsRef.putFile(file)
-            uploadTask.addOnFailureListener {
-                Toast.makeText(this, "Valio verga", Toast.LENGTH_LONG).show()
-            }.addOnSuccessListener {
-                startActivity(Intent(this, MainActivity2::class.java))
-                finishAffinity()
+        db.collection("users").document(FirebaseAuth.getInstance().uid.toString())
+            .update(personaCuidadora).addOnSuccessListener {
+
+                /*Glide.get(this).clearMemory()
+                mainCache(this)*/
+                if (uri == "noModifica") {
+                    startActivity(Intent(this, MainActivity2::class.java))
+                    finishAffinity()
+                } else {
+                    val file = Uri.parse(uri)
+                    val imgsRef =
+                        storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
+                    val uploadTask = imgsRef.putFile(file)
+                    uploadTask.addOnFailureListener {
+                        Toast.makeText(this, "Valio verga", Toast.LENGTH_LONG).show()
+                    }.addOnSuccessListener {
+                        startActivity(Intent(this, MainActivity2::class.java))
+                        finishAffinity()
+                    }
+                }
             }
+    }
+
+    fun mainCache(context: Context) = runBlocking {
+        launch {
+            borrarCache(context)
+            Log.e("Cache", "Se ha borrado el cache")
+        }
+    }
+
+    private suspend fun borrarCache(context: Context) {
+        withContext(Dispatchers.IO) {
+            Glide.get(context).clearDiskCache()
         }
     }
 

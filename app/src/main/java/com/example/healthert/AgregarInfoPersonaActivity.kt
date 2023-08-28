@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.healthert.databinding.ActivityAgregarInfoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
@@ -53,6 +54,7 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
         //Recuperar usuario si se esta modificando
         val estaModificando = intent.getBooleanExtra("estaModificando", false)
         if (estaModificando) {
+            uriString = "noModifica"
             recuperarUsuario()
         }
 
@@ -69,7 +71,9 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
                 val esPaciente = intent.getBooleanExtra("esPaciente", false)
                 var intent = Intent(this, AgregarInfoContacto::class.java)
                 if (esPaciente) {
+                    val curp = getIntent().getStringExtra("curp")
                     intent = Intent(this, AgregarSaludBasicaActivity::class.java)
+                    intent.putExtra("curp",curp)
                 }
                 intent.putExtra("email", getIntent().getStringExtra("email"))
                 intent.putExtra("password", getIntent().getStringExtra("password"))
@@ -105,12 +109,18 @@ class AgregarInfoPersonaActivity : AppCompatActivity() {
     }
 
     private fun recuperarFoto() {
-        val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
-        Glide.with(this).load(userRef).into(imageView)
+        var userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
+        if (intent.getBooleanExtra("esPaciente",false)){
+            userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString()+intent.getStringExtra("curp"))
+        }
+        Glide.with(this).load(userRef).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView)
     }
 
     private fun recuperarInfo() {
-        val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
+        var docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
+        if (intent.getBooleanExtra("esPaciente",false)){
+            docRef = usuarios.document(FirebaseAuth.getInstance().uid+intent.getStringExtra("curp"))
+        }
         docRef.get(Source.DEFAULT).addOnSuccessListener { document ->
             val nombrec = document.data?.getValue("nombrec") as HashMap<*, *>
             nombre.setText(nombrec["nombres"].toString())

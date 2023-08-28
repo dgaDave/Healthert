@@ -34,10 +34,10 @@ class AjustesPacientesActivity : AppCompatActivity() {
                 val paciente = document.toObject(Paciente::class.java)
                 pacientes.add(paciente)
             }
-            ajustesPacientesAdapter = AjustesPacientesAdapter(this, uid.toString(), pacientes)
+            ajustesPacientesAdapter = AjustesPacientesAdapter(this, uid.toString(), pacientes,this)
 
             if (ajustesPacientesAdapter.itemCount == 0) {
-                Toast.makeText(this, "No tienes pacientes registrados", Toast.LENGTH_LONG)
+                Toast.makeText(this, "No tienes pacientes registrados", Toast.LENGTH_LONG).show()
             } else {
                 Log.e("xd", pacientes.toString())
                 recyclerView.adapter = ajustesPacientesAdapter

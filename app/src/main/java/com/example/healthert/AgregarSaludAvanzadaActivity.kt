@@ -82,6 +82,10 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             }
         }
 
+        if (intent.getBooleanExtra("estaModificando", false)) {
+            recuperarDatos()
+        }
+
         registrarButton.setOnClickListener {
             registrarUsuario(
                 intent.getStringExtra("nombre").toString(),
@@ -98,6 +102,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 alergiasEditText.text.toString(),
                 padecimientosEditText.text.toString()
             )
+            setContentView(R.layout.loading_layout)
         }
 
         setContentView(binding.root)
@@ -140,37 +145,73 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             "usuarioCuidador" to uid.toString()
         )
 
-        if(!seguro.isNullOrEmpty()) paciente["seguro"] = seguro
-        if(!alergias.isNullOrEmpty()) paciente["alergias"] = alergias
-        if(!padecimientos.isNullOrEmpty()) paciente["padecimientos"] = padecimientos
+        if (!seguro.isNullOrEmpty()) paciente["seguro"] = seguro
+        if (!alergias.isNullOrEmpty()) paciente["alergias"] = alergias
+        if (!padecimientos.isNullOrEmpty()) paciente["padecimientos"] = padecimientos
 
         //Se sube la informacion
         db.collection("users").document(uid.toString() + curp).set(paciente).addOnSuccessListener {
 
-            //Se sube la foto
-            val file = Uri.parse(uri)
-            val imgsRef =
-                storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString() + curp)
-            val uploadTask = imgsRef.putFile(file)
+            if (uri == "noModifica") {
+                val intent = Intent(this, VincularActivity::class.java)
+                val codigo =
+                    uid!!.substring(0..2) + curp.substring(curp.length - 3..curp.length - 1)
+                intent.putExtra("codigo", codigo)
+                intent.putExtra("documento", uid + curp)
+                startActivity(intent)
+                finishAffinity()
+            } else {
 
-            uploadTask
-                .addOnSuccessListener {
-                    //Mandamos a la actividad de vinculacion
-                    val intent = Intent(this, VincularActivity::class.java)
-                    intent.putExtra("documento", FirebaseAuth.getInstance().uid.toString() + curp)
-                    startActivity(intent)
-                    finishAffinity()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                //Se sube la foto
+                val file = Uri.parse(uri)
+                val imgsRef =
+                    storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString() + curp)
+                val uploadTask = imgsRef.putFile(file)
+
+                uploadTask
+                    .addOnSuccessListener {
+                        //Mandamos a la actividad de vinculacion
+                        val intent = Intent(this, VincularActivity::class.java)
+                        val codigo =
+                            uid!!.substring(0..2) + curp.substring(curp.length - 3..curp.length - 1)
+                        intent.putExtra("codigo", codigo)
+                        intent.putExtra("documento", uid + curp)
+                        startActivity(intent)
+                        finishAffinity()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "No se pudo registrar la foto en el sistema",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+            }
 
         }.addOnFailureListener {
             Toast.makeText(this, "No se pudo registrar los datos del paciente", Toast.LENGTH_SHORT)
                 .show()
         }
 
+    }
+
+    private fun recuperarDatos() {
+        db.collection("users").document(uid + intent.getStringExtra("curp")).get()
+            .addOnSuccessListener {
+                if (it["seguro"] != null) {
+                    seguroRadioButton.isChecked = true
+                    numeroSeguroEditText.setText(it["seguro"].toString())
+                }
+                if (it["alergias"] != null) {
+                    alergiasRadioButton.isChecked = true
+                    alergiasEditText.setText(it["alergias"].toString())
+                }
+                if (it["padecimientos"] != null) {
+                    padecimientosRadioButton.isChecked = true
+                    padecimientosEditText.setText(it["padecimientos"].toString())
+                }
+            }
     }
 
 

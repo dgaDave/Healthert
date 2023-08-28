@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.healthert.AgregarAdapter
 import com.example.healthert.PacientesAdapter
 import com.example.healthert.R
+import com.example.healthert.classes.Paciente
 import com.example.healthert.databinding.FragmentDashboardBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -37,7 +38,7 @@ class DashboardFragment : Fragment() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter1: PacientesAdapter
     private lateinit var adapter2: AgregarAdapter
-    private var pacientes = mutableListOf<com.example.healthert.classes.Paciente>()
+    private var pacientes = mutableListOf<Paciente>()
     private var idsPacientes: Array<String> = arrayOf()
     private val usuarios = Firebase.firestore.collection("users")
     private val markerList: MutableList<Marker> = mutableListOf()
@@ -57,7 +58,7 @@ class DashboardFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
 
-                    val paciente = document.toObject(com.example.healthert.classes.Paciente::class.java)
+                    val paciente = document.toObject(Paciente::class.java)
                     pacientes.add(paciente)
                     idsPacientes += uid + paciente.curp
                 }

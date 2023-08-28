@@ -44,7 +44,15 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="50sp"
-        android:layout_marginBottom="170dp"
+        android:layout_marginBottom="50dp"
+        />
+    <Button
+        android:id="@+id/agregarMasTardeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:text="Agregar mas tarde"
+        android:textSize="20sp"
         />
 
 

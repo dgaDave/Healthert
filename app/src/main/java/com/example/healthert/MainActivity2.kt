@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.example.healthert.databinding.ActivityMain2Binding
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.material.snackbar.Snackbar
@@ -30,6 +31,7 @@ class MainActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Glide.get(this).clearMemory()
         val serviceIntent = Intent(this, MyService::class.java)
         startService(serviceIntent)
         binding = ActivityMain2Binding.inflate(layoutInflater)

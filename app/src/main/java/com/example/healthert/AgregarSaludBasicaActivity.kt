@@ -41,6 +41,9 @@ class AgregarSaludBasicaActivity : AppCompatActivity() {
     private lateinit var sangreAutoCompleteTextView: AutoCompleteTextView
     private lateinit var edadTextView: TextView
     private lateinit var datePicker: DatePickerDialog
+    private var db = Firebase.firestore.collection("users")
+    private var uid = FirebaseAuth.getInstance().uid
+    private var curp : String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +63,12 @@ class AgregarSaludBasicaActivity : AppCompatActivity() {
         sexoAutoCompleteTextView = binding.sexosAutoCompleteTextView
         sangreAutoCompleteTextView = binding.sangreAutoCompleteTextView
         edadTextView = binding.edadTextView
+
+        //Recuperamos datos si se esta modificando
+        if (intent.getBooleanExtra("estaModificando",false)){
+            curp = intent.getStringExtra("curp")!!
+            recuperarDatos()
+        }
 
         //Se inicializa el datepicker
         datePicker = DatePickerDialog(
@@ -168,6 +177,9 @@ class AgregarSaludBasicaActivity : AppCompatActivity() {
 
     private fun iniciarActivityNueva() {
         val intent = Intent(this, AgregarSaludAvanzadaActivity::class.java)
+        if (getIntent().getBooleanExtra("estaModificando",false)){
+            intent.putExtra("estaModificando",true)
+        }
         intent.putExtra("curp", curpEditText.text.toString())
         intent.putExtra("fechaNacimiento", fechaNacimientoEditText.text.toString())
         intent.putExtra("altura", alturaEditText.text.toString())
@@ -181,92 +193,16 @@ class AgregarSaludBasicaActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //Se obtenienen los datos de los campos y se mandan a la función del registro
-    //Se creó la función para ahorrar espacio en el método principal
-    /*private fun obtenerDatosRegistro() {
-        muestraPantallaCarga()
-        registrarPaciente(
-            intent.getStringExtra("nombre").toString(),
-            intent.getStringExtra("apellidoP").toString(),
-            intent.getStringExtra("apellidoM").toString(),
-            intent.getStringExtra("uri").toString(),
-            FirebaseAuth.getInstance().uid.toString(),
-            binding.edadEditText.text.toString().toInt(),
-            binding.alturaEditText.text.toString().toInt(),
-            binding.pesoEditText.text.toString().toInt(),
-            binding.autoCompleteTextView.text.toString(),
-            binding.alergiasEditText.text.toString(),
-            binding.padecimientosEditText.text.toString(),
-            binding.curpEditText.text.toString()
-        )
+    private fun recuperarDatos(){
+        db.document(uid+curp).get().addOnSuccessListener {
+           fechaNacimientoEditText.setText(SimpleDateFormat("dd/MM/yyyy").format(it["fechaNacimiento"]).toString())
+            curpEditText.setText(it["curp"].toString())
+            alturaEditText.setText(it["altura"].toString())
+            pesoEditText.setText(it["peso"].toString())
+            sexoAutoCompleteTextView.setText(it["sexo"].toString())
+            sangreAutoCompleteTextView.setText(it["grupoSanguineo"].toString())
+        }
     }
-
-    private fun muestraPantallaCarga() {
-        setContentView(R.layout.loading_layout)
-    }
-
-    //Función para registrar al paciente, esta manda a llamar la función que inserta los datos en la DB
-    private fun registrarPaciente(
-        nombre: String,
-        apellidoP: String,
-        apellidoM: String,
-        uri: String,
-        usuarioCuidador: String,
-        edad: Int,
-        altura: Int,
-        peso: Int,
-        sexo: String,
-        alergias: String,
-        padecimientos: String,
-        curp: String
-    ) {
-
-        val nombrec = hashMapOf(
-            "nombres" to nombre,
-            "apellidoP" to apellidoP,
-            "apellidoM" to apellidoM
-        )
-        val paciente = hashMapOf(
-            "nombrec" to nombrec,
-            "usuarioCuidador" to usuarioCuidador,
-            "edad" to edad,
-            "altura" to altura,
-            "peso" to peso,
-            "sexo" to sexo,
-            "alergias" to alergias,
-            "padecimientos" to padecimientos,
-            "curp" to curp
-        )
-        insertaDB(paciente, curp, uri)
-
-    }
-
-    //Función para registrar los datos en la base de datos remota
-    private fun insertaDB(paciente: Map<String, Any>, curp: String, uri: String) {
-        db.collection("users")
-            .document(FirebaseAuth.getInstance().uid.toString() + curp)
-            .set(paciente).addOnSuccessListener {
-                val file = Uri.parse(uri)
-                val imgsRef =
-                    storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString() + curp)
-                val uploadTask = imgsRef.putFile(file)
-
-                uploadTask.addOnFailureListener {
-                    Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_LONG)
-                        .show()
-                }.addOnSuccessListener {
-                    val intent = Intent(this, VincularActivity::class.java)
-                    intent.putExtra("documento", FirebaseAuth.getInstance().uid.toString() + curp)
-                    startActivity(intent)
-                    finishAffinity()
-                }
-
-            }.addOnFailureListener {
-                Toast.makeText(this, "No se pudo registrar en el sistema", Toast.LENGTH_LONG).show()
-
-            }
-
-    }*/
 
     private fun formatDate(calendar: Calendar): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

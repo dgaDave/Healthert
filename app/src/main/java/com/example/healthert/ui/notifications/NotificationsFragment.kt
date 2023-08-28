@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.example.healthert.AgregarInfoPersonaActivity
 import com.example.healthert.LoginActivity
 import com.example.healthert.databinding.FragmentNotificationsBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NotificationsFragment : Fragment() {
 
@@ -60,18 +69,35 @@ class NotificationsFragment : Fragment() {
         ayudaCardView = binding.ayudaCardView
         acercaCardView = binding.acercaCardView
 
+
         //Recuperar foto del usuario y guardar en cache
         val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
-        Glide.with(this).load(userRef).into(imgView)
+        Glide.with(this).load(userRef)
+            .signature(ObjectKey(sharedPreferences.getLong("ultimaModificacion", 0)))
+            .onlyRetrieveFromCache(true).into(imgView)
+        Log.e("ultimaModificacion",sharedPreferences.getLong("ultimaModificacion",0).toString())
+        Log.e("sss",FirebaseAuth.getInstance().uid.toString())
+        userRef.metadata.addOnSuccessListener {
+            val ultimaModificacion = it.updatedTimeMillis
+            if (ultimaModificacion!=sharedPreferences.getLong("ultimaModificacion", 0)){
+                val signature = ObjectKey(ultimaModificacion)
+                sharedPreferences.edit().putLong("ultimaModificacion", ultimaModificacion).apply()
+                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).signature(signature).into(imgView)
+        }
+
+        }
 
         //Recuperar nombre del usuario
         val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
-        docRef.get().addOnSuccessListener { document ->
+        docRef.get(Source.CACHE).addOnSuccessListener { document ->
             nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
             nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
-        }.addOnFailureListener {
-            Toast.makeText(context, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
         }
+        docRef.get(Source.SERVER).addOnSuccessListener { document ->
+            nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
+            nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
+        }
+
 
         //Boton de ajustes del usuario
         ajustesUsuarioImageView.setOnClickListener {

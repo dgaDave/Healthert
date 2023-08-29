@@ -22,6 +22,9 @@
         android:theme="@style/Theme.Healthert"
         tools:targetApi="31">
         <activity
+            android:name=".ui.home.qrActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.notifications.AjustesPacientesActivity"
             android:exported="false" />
         <activity
@@ -30,8 +33,7 @@
         <activity
             android:name=".AgendarMedicamentoActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
 
         <receiver
             android:name=".BootReceiver"

@@ -68,6 +68,7 @@ class AgregarInfoContacto : AppCompatActivity() {
 
         //evento de registrar
         registrarBoton.setOnClickListener {
+            setContentView(R.layout.loading_layout)
             if (validarDatos()) {
                 if (estaModificando) {
                     modificarUsuario(
@@ -236,19 +237,5 @@ class AgregarInfoContacto : AppCompatActivity() {
                 }
             }
     }
-
-    fun mainCache(context: Context) = runBlocking {
-        launch {
-            borrarCache(context)
-            Log.e("Cache", "Se ha borrado el cache")
-        }
-    }
-
-    private suspend fun borrarCache(context: Context) {
-        withContext(Dispatchers.IO) {
-            Glide.get(context).clearDiskCache()
-        }
-    }
-
 
 }

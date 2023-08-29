@@ -75,15 +75,22 @@ class NotificationsFragment : Fragment() {
         Glide.with(this).load(userRef)
             .signature(ObjectKey(sharedPreferences.getLong("ultimaModificacion", 0)))
             .onlyRetrieveFromCache(true).into(imgView)
-        Log.e("ultimaModificacion",sharedPreferences.getLong("ultimaModificacion",0).toString())
-        Log.e("sss",FirebaseAuth.getInstance().uid.toString())
+        Log.e("ultimaModificacion", sharedPreferences.getLong("ultimaModificacion", 0).toString())
+        Log.e("sss", FirebaseAuth.getInstance().uid.toString())
         userRef.metadata.addOnSuccessListener {
             val ultimaModificacion = it.updatedTimeMillis
-            if (ultimaModificacion!=sharedPreferences.getLong("ultimaModificacion", 0)){
+            if (ultimaModificacion != sharedPreferences.getLong("ultimaModificacion", 0)) {
                 val signature = ObjectKey(ultimaModificacion)
                 sharedPreferences.edit().putLong("ultimaModificacion", ultimaModificacion).apply()
-                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).signature(signature).into(imgView)
-        }
+                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(signature).into(imgView)
+            }
+            if (imgView.drawable == null) {
+                val signature = ObjectKey(ultimaModificacion)
+                sharedPreferences.edit().putLong("ultimaModificacion", ultimaModificacion).apply()
+                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(signature).into(imgView)
+            }
 
         }
 

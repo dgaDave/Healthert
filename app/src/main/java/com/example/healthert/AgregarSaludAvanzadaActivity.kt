@@ -1,24 +1,35 @@
 package com.example.healthert
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import com.example.healthert.databinding.ActivityAgregarSaludAvanzadaBinding
-import com.example.healthert.databinding.ActivityAgregarSaludBasicaBinding
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.itextpdf.text.*
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfWriter
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 
 
@@ -87,6 +98,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         }
 
         registrarButton.setOnClickListener {
+            setContentView(R.layout.loading_layout)
             registrarUsuario(
                 intent.getStringExtra("nombre").toString(),
                 intent.getStringExtra("apellidoP").toString(),
@@ -102,7 +114,6 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 alergiasEditText.text.toString(),
                 padecimientosEditText.text.toString()
             )
-            setContentView(R.layout.loading_layout)
         }
 
         setContentView(binding.root)
@@ -113,6 +124,121 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         return format.parse(fecha).time
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun crearPDF(
+        paciente: Map<String, String>,
+        uri: String
+    ) {
+        val archivo: File?
+        try {
+
+
+            val carpeta = "/reportespdf"
+            val path =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + carpeta
+            val dir = File(path)
+            if (!dir.exists()) {
+                dir.mkdirs()
+                Toast.makeText(this, "CARPETA CREADA", Toast.LENGTH_SHORT).show()
+            }
+
+            archivo = File.createTempFile("tempdf","pdf")
+            val fos = FileOutputStream(archivo)
+            val documento = Document()
+            PdfWriter.getInstance(documento, fos)
+            documento.open()
+
+            val tituloFecha = Paragraph(
+                "${SimpleDateFormat("dd/MM/yyyy").format(Timestamp.now().toDate())}\n",
+                FontFactory.getFont("roboto", 14f)
+            )
+            tituloFecha.alignment = Element.ALIGN_RIGHT
+            documento.add(tituloFecha)
+
+            val table = PdfPTable(4)
+            table.widthPercentage = 100f
+
+            val image =
+                Image.getInstance(drawableToBytes(this.getDrawable(R.drawable.logo_doc)!!))
+
+            image.scaleAbsolute(100f, 100f)
+            val imageCell = PdfPCell(image)
+            imageCell.verticalAlignment= Element.ALIGN_MIDDLE
+            imageCell.horizontalAlignment= Element.ALIGN_CENTER
+            imageCell.border = PdfPCell.NO_BORDER
+            table.addCell(imageCell)
+
+            val tituloApp = Paragraph("Healthert", FontFactory.getFont("roboto", 40f, Font.BOLD))
+            val tituloCell = PdfPCell(tituloApp)
+            tituloCell.border = PdfPCell.NO_BORDER
+            tituloCell.verticalAlignment = Element.ALIGN_MIDDLE
+            tituloCell.colspan = 3
+            table.addCell(tituloCell)
+            documento.add(table)
+
+            /*var imagen = Image.getInstance(uri)
+            imagen.scaleAbsolute(100f,100f)
+
+            val personaCell = PdfPCell(imagen)
+            personaCell.border = PdfPCell.NO_BORDER
+            personaCell.verticalAlignment = Element.ALIGN_MIDDLE
+            table.addCell(personaCell)
+            documento.add(table)*/
+
+            var titulo = Paragraph(
+                "Nombre del paciente:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+            var nombrec = paciente["nombrec"] as Map<String,String>
+            var contenido = Paragraph("${nombrec["nombres"]} ${nombrec["apellidoP"]} ${nombrec["apellidoM"]}", FontFactory.getFont("arial", 16f))
+            documento.add(contenido)
+
+            titulo = Paragraph(
+                "CURP:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+            contenido = Paragraph("${paciente["curp"]}", FontFactory.getFont("arial", 16f))
+            documento.add(contenido)
+
+            titulo = Paragraph(
+                "Usuario cuidador:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+            contenido = Paragraph("${paciente["usuarioCuidador"]}", FontFactory.getFont("arial", 16f))
+            documento.add(contenido)
+
+            documento.close()
+
+            val uploadTask = storageRef.child("/fichas/$uid${paciente["curp"]}")
+            uploadTask.putFile(Uri.fromFile(archivo)).addOnSuccessListener {
+                Log.e("ssssss", "Se subio")
+            }.addOnFailureListener{
+                Log.e("ssssss", "no se subio")
+            }
+            archivo.delete()
+
+            Toast.makeText(this, "El archivo ha sido generado con exito", Toast.LENGTH_SHORT)
+                .show()
+
+        } catch (e: DocumentException) {
+            Toast.makeText(this, "No se pudo generar el reporte", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        } catch (e: FileNotFoundException) {
+            Toast.makeText(this, "No se pudo generar el reporte", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+
+
+    }
+    private fun drawableToBytes(drawable: Drawable): ByteArray {
+        val bitmap = (drawable as BitmapDrawable).bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
+    }
     private fun registrarUsuario(
         nombre: String,
         apellidoP: String,
@@ -148,6 +274,8 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         if (!seguro.isNullOrEmpty()) paciente["seguro"] = seguro
         if (!alergias.isNullOrEmpty()) paciente["alergias"] = alergias
         if (!padecimientos.isNullOrEmpty()) paciente["padecimientos"] = padecimientos
+
+        crearPDF(paciente as Map<String,String>, uri)
 
         //Se sube la informacion
         db.collection("users").document(uid.toString() + curp).set(paciente).addOnSuccessListener {

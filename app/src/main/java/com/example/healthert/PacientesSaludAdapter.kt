@@ -6,7 +6,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +20,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.healthert.ui.home.qrActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.itextpdf.text.*
+import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import java.io.ByteArrayOutputStream
@@ -30,7 +35,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
 class PacientesSaludAdapter(
     private val context: Context,
@@ -41,45 +46,47 @@ class PacientesSaludAdapter(
     RecyclerView.Adapter<PacientesSaludAdapter.ViewHolder>() {
     private var storageRef = Firebase.storage.reference
     private var db = Firebase.firestore
-
+    private val handler = Handler(Looper.getMainLooper())
+    private var CURRENT_ITEM = 0
     //private var db = Firebase.database.reference.child("medicionTr")
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nombre: TextView
-        var imageView: ImageView
-        var floatingActionButtonAgendar: FloatingActionButton
-        var floatingActionButtonReportar: FloatingActionButton
-        var floatingActionButtonEditar: FloatingActionButton
-        var floatingActionButtonAtras: FloatingActionButton
-        var floatingActionButtonSiguiente: FloatingActionButton
         var curp: TextView
         var peso: TextView
         var altura: TextView
         var edad: TextView
+        var sexo: TextView
+        var grupoSanguineo: TextView
+        var seguro: TextView
         var padecimientos: TextView
         var tratamientosText: TextView
         var alergias: TextView
+        var imageView: ImageView
+        var agendarImageView: ImageView
+        var reportarImageView: ImageView
+        var qrImageView: ImageView
         var viewPagerTratamientos: ViewPager2
 
 
         init {
             viewPagerTratamientos = itemView.findViewById(R.id.viewPagerTratamientosAgendados)
-            floatingActionButtonReportar = itemView.findViewById(R.id.floatingActionButtonReportar)
-            floatingActionButtonAgendar = itemView.findViewById(R.id.floatingActionButtonAgendar)
-            floatingActionButtonEditar = itemView.findViewById(R.id.floatingActionButtonEditar)
-            floatingActionButtonAtras = itemView.findViewById(R.id.floatingActionButtonAtras)
-            floatingActionButtonSiguiente =
-                itemView.findViewById(R.id.floatingActionButtonSiguiente)
+            reportarImageView = itemView.findViewById(R.id.reportarPacienteImageView)
+            agendarImageView = itemView.findViewById(R.id.agendarPacientesImageView)
+            qrImageView = itemView.findViewById(R.id.qrPacientesImageView)
             nombre = itemView.findViewById(R.id.nombrePacienteTextView)
             imageView = itemView.findViewById(R.id.imageView)
             curp = itemView.findViewById(R.id.curpTextView)
             peso = itemView.findViewById(R.id.pesoTextView)
             altura = itemView.findViewById(R.id.alturaTextView)
             edad = itemView.findViewById(R.id.edadTextView)
+            grupoSanguineo = itemView.findViewById(R.id.grupoSanguineoTextView)
+            sexo = itemView.findViewById(R.id.sexoTextView)
             padecimientos = itemView.findViewById(R.id.padecimientosTextView)
             alergias = itemView.findViewById(R.id.alergiasTextView)
-            tratamientosText = itemView.findViewById(R.id.tratamientosTextView)
+            seguro = itemView.findViewById(R.id.seguroTextView)
+            tratamientosText = itemView.findViewById(R.id.tratamientosTituloText)
         }
     }
 
@@ -100,6 +107,19 @@ class PacientesSaludAdapter(
         val peso = pacientes[i].peso
         val seguro = pacientes[i].seguro
         val sexo = pacientes[i].sexo
+
+        viewHolder.nombre.text = "$nombres $apellidoP $apellidoM"
+        viewHolder.curp.text = curp
+        viewHolder.peso.text = "$peso kg"
+        viewHolder.altura.text = "$altura cm"
+        viewHolder.edad.text = "$edad años"
+        viewHolder.seguro.text = seguro
+        viewHolder.sexo.text = sexo
+        viewHolder.grupoSanguineo.text = grupoSanguineo
+
+        val userRef = storageRef.child("images/" + "$uid$curp")
+        Glide.with(fragment).load(userRef).into(viewHolder.imageView)
+
         val usuarioCuidador = pacientes[i].usuarioCuidador
         var adapter: TratamientosAdapter
         val tratamientos = mutableListOf<Tratamiento>()
@@ -121,11 +141,8 @@ class PacientesSaludAdapter(
                 adapter = TratamientosAdapter(tratamientos)
                 viewHolder.viewPagerTratamientos.adapter = adapter
 
-                if (tratamientos.isEmpty()) {
-                    viewHolder.floatingActionButtonAtras.hide()
-                    viewHolder.floatingActionButtonSiguiente.hide()
-                    viewHolder.viewPagerTratamientos.visibility = View.GONE
-                    viewHolder.tratamientosText.text = "No tienes tratamientos"
+                if (tratamientos.isNotEmpty()) {
+                    viewHolder.viewPagerTratamientos.visibility = View.VISIBLE
                 }
             }
 
@@ -155,14 +172,6 @@ class PacientesSaludAdapter(
 
             }
 
-
-        val userRef = storageRef.child("images/" + "$uid$curp")
-        Glide.with(fragment).load(userRef).into(viewHolder.imageView)
-        viewHolder.nombre.text = "$nombres $apellidoP $apellidoM"
-        viewHolder.curp.text = curp
-        viewHolder.peso.text = "$peso kg"
-        viewHolder.altura.text = "$altura cm"
-        viewHolder.edad.text = "$edad años"
         if (alergias.isNullOrEmpty()) {
             viewHolder.alergias.text = "El paciente no tiene alergias"
         } else {
@@ -173,26 +182,47 @@ class PacientesSaludAdapter(
         } else {
             viewHolder.padecimientos.text = padecimientos
         }
+        if (sexo == "Prefiero no especificar") {
+            viewHolder.sexo.visibility = View.GONE
+        }
+        if (seguro.isNullOrEmpty()) {
+            viewHolder.seguro.visibility = View.GONE
+        }
 
-        viewHolder.floatingActionButtonAgendar.setOnClickListener {
+        viewHolder.agendarImageView.setOnClickListener {
             val agendar = Intent(context, AgendarMedicamentoActivity::class.java)
             agendar.putExtra("paciente", "$uid$curp")
             context.startActivity(agendar)
         }
-        viewHolder.floatingActionButtonEditar.setOnClickListener {
-            //Codigo Editar
-        }
-        viewHolder.floatingActionButtonReportar.setOnClickListener {
+
+        viewHolder.reportarImageView.setOnClickListener {
             crearPDF(nombrecS, tratamientos, alertas, historiales)
         }
-        viewHolder.floatingActionButtonAtras.setOnClickListener {
-            viewHolder.viewPagerTratamientos.currentItem =
-                viewHolder.viewPagerTratamientos.currentItem - 1
+
+        viewHolder.qrImageView.setOnClickListener {
+            storageRef.child("fichas/$uid$curp").downloadUrl.addOnSuccessListener {
+                val intent = Intent(context,qrActivity::class.java)
+                intent.putExtra("link",it.toString())
+                context.startActivity(intent)
+
+                //Poner loading en otro activity
+
+            }.addOnFailureListener {
+                Toast.makeText(context,"F",Toast.LENGTH_SHORT).show()
+            }
         }
-        viewHolder.floatingActionButtonSiguiente.setOnClickListener {
-            viewHolder.viewPagerTratamientos.currentItem =
-                viewHolder.viewPagerTratamientos.currentItem + 1
-        }
+
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (viewHolder.viewPagerTratamientos.currentItem == (viewHolder.viewPagerTratamientos.adapter!!.itemCount - 1)) {
+                    CURRENT_ITEM = 0
+                }
+                viewHolder.viewPagerTratamientos.setCurrentItem(CURRENT_ITEM++, true)
+                handler.postDelayed(this, 3000) // Cambiar de página cada 3 segundos
+            }
+        }, 3000)
+
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -234,21 +264,28 @@ class PacientesSaludAdapter(
             tituloFecha.alignment = Element.ALIGN_RIGHT
             documento.add(tituloFecha)
 
+            val table = PdfPTable(4)
+            table.widthPercentage = 100f
+
+
 
             val image =
                 Image.getInstance(drawableToBytes(context.getDrawable(R.drawable.logo_doc)!!))
 
-            image.scaleToFit(75f, 75f)
-            image.alignment = Element.ALIGN_CENTER
+            image.scaleAbsolute(100f, 100f)
+            val imageCell = PdfPCell(image)
+            imageCell.verticalAlignment=Element.ALIGN_MIDDLE
+            imageCell.horizontalAlignment=Element.ALIGN_CENTER
+            imageCell.border = PdfPCell.NO_BORDER
+            table.addCell(imageCell)
 
-            documento.add(image)
-
-            val tituloApp = Paragraph(
-                "\nHealthert\n\n",
-                FontFactory.getFont("roboto", 22f, Font.BOLD)
-            )
-            tituloApp.alignment = Element.ALIGN_CENTER
-            documento.add(tituloApp)
+            val tituloApp = Paragraph("Healthert", FontFactory.getFont("roboto", 40f, Font.BOLD))
+            val tituloCell = PdfPCell(tituloApp)
+            tituloCell.border = PdfPCell.NO_BORDER
+            tituloCell.verticalAlignment = Element.ALIGN_MIDDLE
+            tituloCell.colspan = 3
+            table.addCell(tituloCell)
+            documento.add(table)
 
             val titulo = Paragraph(
                 "Reporte del paciente:\n",
@@ -353,7 +390,6 @@ class PacientesSaludAdapter(
             Toast.makeText(context, "El archivo ha sido generado con exito", Toast.LENGTH_SHORT)
                 .show()
 
-
         } catch (e: DocumentException) {
             Toast.makeText(context, "No se pudo generar el reporte", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
@@ -407,5 +443,10 @@ class PacientesSaludAdapter(
         val paciente: String = "",
         val fechaLong: Long = 0
     )
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        handler.removeCallbacksAndMessages(null) // Detener el handler al destruir la actividad
+    }
 
 }

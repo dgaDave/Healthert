@@ -126,8 +126,8 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     private fun crearPDF(
-        paciente: Map<String, String>,
-        uri: String
+        paciente: MutableMap<String, Any>,
+        cuidador: Map<String, *>, uri:String
     ) {
         val archivo: File?
         try {
@@ -142,7 +142,7 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
                 Toast.makeText(this, "CARPETA CREADA", Toast.LENGTH_SHORT).show()
             }
 
-            archivo = File.createTempFile("tempdf","pdf")
+            archivo = File.createTempFile("tempdf", "pdf")
             val fos = FileOutputStream(archivo)
             val documento = Document()
             PdfWriter.getInstance(documento, fos)
@@ -163,12 +163,12 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
 
             image.scaleAbsolute(100f, 100f)
             val imageCell = PdfPCell(image)
-            imageCell.verticalAlignment= Element.ALIGN_MIDDLE
-            imageCell.horizontalAlignment= Element.ALIGN_CENTER
+            imageCell.verticalAlignment = Element.ALIGN_MIDDLE
+            imageCell.horizontalAlignment = Element.ALIGN_CENTER
             imageCell.border = PdfPCell.NO_BORDER
             table.addCell(imageCell)
 
-            val tituloApp = Paragraph("Healthert", FontFactory.getFont("roboto", 40f, Font.BOLD))
+            val tituloApp = Paragraph("Healthert", FontFactory.getFont("roboto", 50f, Font.BOLD))
             val tituloCell = PdfPCell(tituloApp)
             tituloCell.border = PdfPCell.NO_BORDER
             tituloCell.verticalAlignment = Element.ALIGN_MIDDLE
@@ -176,22 +176,18 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             table.addCell(tituloCell)
             documento.add(table)
 
-            /*var imagen = Image.getInstance(uri)
-            imagen.scaleAbsolute(100f,100f)
-
-            val personaCell = PdfPCell(imagen)
-            personaCell.border = PdfPCell.NO_BORDER
-            personaCell.verticalAlignment = Element.ALIGN_MIDDLE
-            table.addCell(personaCell)
-            documento.add(table)*/
+            //Anadir imagen de la persona en el futuro.
 
             var titulo = Paragraph(
                 "Nombre del paciente:",
                 FontFactory.getFont("arial", 16f, Font.BOLD)
             )
             documento.add(titulo)
-            var nombrec = paciente["nombrec"] as Map<String,String>
-            var contenido = Paragraph("${nombrec["nombres"]} ${nombrec["apellidoP"]} ${nombrec["apellidoM"]}", FontFactory.getFont("arial", 16f))
+            var nombrec = paciente["nombrec"] as Map<String, String>
+            var contenido = Paragraph(
+                "${nombrec["nombres"]} ${nombrec["apellidoP"]} ${nombrec["apellidoM"]}",
+                FontFactory.getFont("arial", 16f)
+            )
             documento.add(contenido)
 
             titulo = Paragraph(
@@ -202,26 +198,107 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             contenido = Paragraph("${paciente["curp"]}", FontFactory.getFont("arial", 16f))
             documento.add(contenido)
 
+            if (paciente["seguro"] != null) {
+                titulo = Paragraph(
+                    "Seguro:",
+                    FontFactory.getFont("arial", 16f, Font.BOLD)
+                )
+                documento.add(titulo)
+                contenido = Paragraph("${paciente["seguro"]}", FontFactory.getFont("arial", 16f))
+                documento.add(contenido)
+            }
+
             titulo = Paragraph(
-                "Usuario cuidador:",
+                "Informacion medica:",
                 FontFactory.getFont("arial", 16f, Font.BOLD)
             )
             documento.add(titulo)
-            contenido = Paragraph("${paciente["usuarioCuidador"]}", FontFactory.getFont("arial", 16f))
+
+            val table2 = PdfPTable(2)
+            table2.widthPercentage = 100f
+
+            val altura = paciente["altura"]
+            Log.e("sss", altura.toString())
+            var oracion = "Altura: " + paciente["altura"].toString() + " cm."
+            contenido = Paragraph(oracion, FontFactory.getFont("arial", 16f))
+            var contenidoPCell = PdfPCell(contenido)
+            contenidoPCell.border = PdfPCell.NO_BORDER
+            table2.addCell(contenidoPCell)
+
+            oracion = "Peso: ${paciente["peso"].toString()} kg."
+            contenido = Paragraph(oracion, FontFactory.getFont("arial", 16f))
+            contenidoPCell = PdfPCell(contenido)
+            contenidoPCell.border = PdfPCell.NO_BORDER
+            table2.addCell(contenidoPCell)
+
+            val edad = ((System.currentTimeMillis() - paciente["fechaNacimiento"].toString()
+                .toLong()) / (365.25 * 24 * 60 * 60 * 1000)).toInt()
+            oracion = "Edad: $edad anos."
+            contenido = Paragraph(oracion, FontFactory.getFont("arial", 16f))
+            contenidoPCell = PdfPCell(contenido)
+            contenidoPCell.border = PdfPCell.NO_BORDER
+            table2.addCell(contenidoPCell)
+
+            contenido = Paragraph("Sexo: ${paciente["sexo"]}.", FontFactory.getFont("arial", 16f))
+            contenidoPCell = PdfPCell(contenido)
+            contenidoPCell.border = PdfPCell.NO_BORDER
+            table2.addCell(contenidoPCell)
+
+            contenido = Paragraph("Grupo sanguineo: ${paciente["grupoSanguineo"]}.", FontFactory.getFont("arial", 16f))
+            contenidoPCell = PdfPCell(contenido)
+            contenidoPCell.border = PdfPCell.NO_BORDER
+            contenidoPCell.colspan = 2
+            table2.addCell(contenidoPCell)
+
+            documento.add(table2)
+
+            titulo = Paragraph(
+                "Contacto de emergencia:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+
+            nombrec = cuidador["nombrec"] as Map<String, String>
+            contenido = Paragraph(
+                "Nombre: ${nombrec["nombres"]} ${nombrec["apellidoP"]} ${nombrec["apellidoM"]}",
+                FontFactory.getFont("arial", 16f)
+            )
+            documento.add(contenido)
+
+            val domicilio = cuidador["domicilio"] as Map<String, String>
+
+            contenido = Paragraph(
+                "Domicilio: ${domicilio["calle"]} ${domicilio["colonia"]}, ${domicilio["codigoPostal"]}, ${domicilio["municipio"]}, ${domicilio["estado"]}",
+                FontFactory.getFont("arial", 16f)
+            )
+            documento.add(contenido)
+
+            contenido = Paragraph(
+                "Numero: ${cuidador["telefono"]}",
+                FontFactory.getFont("arial", 16f)
+            )
+            documento.add(contenido)
+
+            contenido = Paragraph(
+                "Email: ${cuidador["email"]}",
+                FontFactory.getFont("arial", 16f)
+            )
             documento.add(contenido)
 
             documento.close()
-
             val uploadTask = storageRef.child("/fichas/$uid${paciente["curp"]}")
             uploadTask.putFile(Uri.fromFile(archivo)).addOnSuccessListener {
                 Log.e("ssssss", "Se subio")
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Log.e("ssssss", "no se subio")
             }
             archivo.delete()
 
-            Toast.makeText(this, "El archivo ha sido generado con exito", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                "Se ha subido la ficha medica",
+                Toast.LENGTH_SHORT
+            ).show()
 
         } catch (e: DocumentException) {
             Toast.makeText(this, "No se pudo generar el reporte", Toast.LENGTH_SHORT).show()
@@ -233,12 +310,14 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
 
 
     }
+
     private fun drawableToBytes(drawable: Drawable): ByteArray {
         val bitmap = (drawable as BitmapDrawable).bitmap
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
     }
+
     private fun registrarUsuario(
         nombre: String,
         apellidoP: String,
@@ -275,7 +354,15 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
         if (!alergias.isNullOrEmpty()) paciente["alergias"] = alergias
         if (!padecimientos.isNullOrEmpty()) paciente["padecimientos"] = padecimientos
 
-        crearPDF(paciente as Map<String,String>, uri)
+        db.collection("users").document("$uid").get().addOnSuccessListener {
+            crearPDF(paciente, it.data as Map<String, *>,uri)
+        }.addOnFailureListener {
+            Toast.makeText(
+                this,
+                "No se pudo recuperar la informacion del cuidador",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         //Se sube la informacion
         db.collection("users").document(uid.toString() + curp).set(paciente).addOnSuccessListener {

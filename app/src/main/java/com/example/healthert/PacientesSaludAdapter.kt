@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.db.williamchart.view.LineChartView
 import com.example.healthert.ui.home.qrActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
@@ -62,12 +64,14 @@ class PacientesSaludAdapter(
         var seguro: TextView
         var padecimientos: TextView
         var tratamientosText: TextView
+        var tratamientosParrafoText: TextView
         var alergias: TextView
         var imageView: ImageView
         var agendarImageView: ImageView
         var reportarImageView: ImageView
         var qrImageView: ImageView
         var viewPagerTratamientos: ViewPager2
+        var grafica : LineChartView
 
 
         init {
@@ -87,6 +91,8 @@ class PacientesSaludAdapter(
             alergias = itemView.findViewById(R.id.alergiasTextView)
             seguro = itemView.findViewById(R.id.seguroTextView)
             tratamientosText = itemView.findViewById(R.id.tratamientosTituloText)
+            tratamientosParrafoText = itemView.findViewById(R.id.tratamientosParrafoText)
+            grafica = itemView.findViewById(R.id.graficaLinea)
         }
     }
 
@@ -182,6 +188,9 @@ class PacientesSaludAdapter(
         } else {
             viewHolder.padecimientos.text = padecimientos
         }
+        if(tratamientos.isNullOrEmpty()){
+            viewHolder.tratamientosParrafoText.visibility = View.VISIBLE
+        }
         if (sexo == "Prefiero no especificar") {
             viewHolder.sexo.visibility = View.GONE
         }
@@ -212,6 +221,24 @@ class PacientesSaludAdapter(
             }
         }
 
+        val lineSet = listOf(
+            "03:00" to 60f,
+            "" to 63f,
+            "09:00" to 69f,
+            "" to 75f,
+            "12:00" to 80f,
+            "" to 85f,
+            "18:00" to 60f,
+            "" to 60f
+        )
+
+        viewHolder.grafica.gradientFillColors = intArrayOf(Color.parseColor("#6fd81c"), Color.TRANSPARENT)
+        viewHolder.grafica.animation.duration = 2000
+        viewHolder.grafica.labelsFormatter ={it.toInt().toString() + "bmp"}
+        viewHolder.grafica.animate(lineSet)
+        viewHolder.grafica.onDataPointTouchListener={index,x,y->
+
+        }
 
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -221,7 +248,8 @@ class PacientesSaludAdapter(
                 viewHolder.viewPagerTratamientos.setCurrentItem(CURRENT_ITEM++, true)
                 handler.postDelayed(this, 3000) // Cambiar de página cada 3 segundos
             }
-        }, 3000)
+        }, 2000)
+
 
     }
 

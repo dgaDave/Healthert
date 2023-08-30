@@ -266,7 +266,7 @@
                         android:layout_marginHorizontal="22dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text="Aqui se ven las alergias bla bla bla"
+                        android:text="No hay alergias agendadas"
                         android:textSize="20sp" />
 
                 </RelativeLayout>
@@ -296,6 +296,19 @@
                         android:textSize="26sp"
                         android:textStyle="bold" />
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tratamientosParrafoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tratamientosTituloText"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginHorizontal="22dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        android:text="No hay tratamientos agendados."
+                        android:textSize="20sp" />
+
                     <androidx.viewpager2.widget.ViewPager2
                         android:nestedScrollingEnabled="true"
                         android:visibility="gone"
@@ -307,6 +320,49 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/tratamientosTituloText" />
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="1dp"
+                android:clickable="false"
+                app:cardCornerRadius="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/ultimasMedicionesTituloTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Ultimas mediciones"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <com.db.williamchart.view.LineChartView
+                        android:layout_marginHorizontal="8dp"
+                        android:id="@+id/graficaLinea"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_below="@id/ultimasMedicionesTituloTextView"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        app:chart_lineColor="@color/primario"
+                        app:chart_labelsSize="12dp"
+                        android:layout_marginVertical="16dp"
+                        app:chart_lineThickness="1dp"
+                        app:chart_smoothLine="true"
+                        />
+
 
                 </RelativeLayout>
 

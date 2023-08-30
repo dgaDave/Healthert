@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:text="Para poder recibir los datos de tu paciente, se necesita tener un smartwatch vinculado con el, escribe el siguiente codigo en tu aplicacion del smartwatch:"
+        android:text="Para poder recibir los datos de tu paciente, se necesita tener un smartwatch vinculado con el, escribe el siguiente codigo en tu aplicación del smartwatch:"
         android:textSize="15sp" />
 
     <TextView

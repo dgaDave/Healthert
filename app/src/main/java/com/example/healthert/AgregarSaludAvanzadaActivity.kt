@@ -253,6 +253,30 @@ class AgregarSaludAvanzadaActivity : AppCompatActivity() {
             documento.add(table2)
 
             titulo = Paragraph(
+                "Alergias:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+
+            contenido = Paragraph(
+                "${paciente["alergias"]}",
+                FontFactory.getFont("arial", 16f)
+            )
+            documento.add(contenido)
+
+            titulo = Paragraph(
+                "Padecimientos:",
+                FontFactory.getFont("arial", 16f, Font.BOLD)
+            )
+            documento.add(titulo)
+
+            contenido = Paragraph(
+                "${paciente["padecimientos"]}",
+                FontFactory.getFont("arial", 16f)
+            )
+            documento.add(contenido)
+
+            titulo = Paragraph(
                 "Contacto de emergencia:",
                 FontFactory.getFont("arial", 16f, Font.BOLD)
             )

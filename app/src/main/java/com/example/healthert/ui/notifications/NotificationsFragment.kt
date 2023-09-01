@@ -4,32 +4,45 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.example.healthert.AgregarInfoPersonaActivity
 import com.example.healthert.LoginActivity
 import com.example.healthert.databinding.FragmentNotificationsBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NotificationsFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
-    private lateinit var salirCardView: CardView
+    private lateinit var cerrarSesionButton: Button
     private lateinit var nombreUsuarioTextView: TextView
     private lateinit var imgView: ImageView
-    private lateinit var ajustesUsuarioCardView: CardView
-
-    private lateinit var nombrec: HashMap<String, String>
+    private lateinit var ajustesUsuarioImageView: ImageView
+    private lateinit var ajustesPacienteCardView: CardView
+    private lateinit var informacionPlanCardView: CardView
+    private lateinit var ayudaCardView: CardView
+    private lateinit var acercaCardView: CardView
+    private lateinit var nombrec: Map<String, String>
     private var storageRef = Firebase.storage.reference
     private val usuarios = Firebase.firestore.collection("users")
     private lateinit var sharedPreferences: SharedPreferences
@@ -49,38 +62,76 @@ class NotificationsFragment : Fragment() {
         //Bindear
         nombreUsuarioTextView = binding.nombreUsuarioTextview
         imgView = binding.imageView
-        salirCardView = binding.salirCardview
-        ajustesUsuarioCardView = binding.ajustesUsuarioCardView
-
-        //Boton de ajustes del usuario
-        ajustesUsuarioCardView.setOnClickListener {
-            val intent = Intent(activity,AgregarInfoPersonaActivity::class.java)
-            intent.putExtra("estaModificando",true)
-            startActivity(intent)
-        }
-
-
-
-
-
+        cerrarSesionButton = binding.cerrarSesionButton
+        ajustesUsuarioImageView = binding.ajustesUsuarioImageView
+        ajustesPacienteCardView = binding.ajustesPacienteCardView
+        informacionPlanCardView = binding.informacionPlanCardView
+        ayudaCardView = binding.ayudaCardView
+        acercaCardView = binding.acercaCardView
 
 
         //Recuperar foto del usuario y guardar en cache
         val userRef = storageRef.child("images/" + FirebaseAuth.getInstance().uid.toString())
-        Glide.with(this).load(userRef).into(imgView)
+        Glide.with(this).load(userRef)
+            .signature(ObjectKey(sharedPreferences.getLong("ultimaModificacion", 0)))
+            .onlyRetrieveFromCache(true).into(imgView)
+        Log.e("ultimaModificacion", sharedPreferences.getLong("ultimaModificacion", 0).toString())
+        Log.e("sss", FirebaseAuth.getInstance().uid.toString())
+        userRef.metadata.addOnSuccessListener {
+            val ultimaModificacion = it.updatedTimeMillis
+            if (ultimaModificacion != sharedPreferences.getLong("ultimaModificacion", 0)) {
+                val signature = ObjectKey(ultimaModificacion)
+                sharedPreferences.edit().putLong("ultimaModificacion", ultimaModificacion).apply()
+                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(signature).into(imgView)
+            }
+            if (imgView.drawable == null) {
+                val signature = ObjectKey(ultimaModificacion)
+                sharedPreferences.edit().putLong("ultimaModificacion", ultimaModificacion).apply()
+                Glide.with(this).load(userRef).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(signature).into(imgView)
+            }
+
+        }
 
         //Recuperar nombre del usuario
         val docRef = usuarios.document(FirebaseAuth.getInstance().uid!!)
-        docRef.get().addOnSuccessListener { document ->
+        docRef.get(Source.CACHE).addOnSuccessListener { document ->
             nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
-            nombreUsuarioTextView.text =
-                nombrec["nombres"] + " " + nombrec["apellidoP"] + " " + nombrec["apellidoM"]
-        }.addOnFailureListener {
-            Toast.makeText(context, "No se pudo recuperar la informacion", Toast.LENGTH_LONG).show()
+            nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
+        }
+        docRef.get(Source.SERVER).addOnSuccessListener { document ->
+            nombrec = document.data?.getValue("nombrec") as HashMap<String, String>
+            nombreUsuarioTextView.text = "Hola " + nombrec["nombres"] + "!"
+        }
+
+
+        //Boton de ajustes del usuario
+        ajustesUsuarioImageView.setOnClickListener {
+            val intent = Intent(activity, AgregarInfoPersonaActivity::class.java)
+            intent.putExtra("estaModificando", true)
+            startActivity(intent)
+        }
+
+        //Boton de ajustes del paciente
+        ajustesPacienteCardView.setOnClickListener {
+            startActivity(Intent(requireContext(), AjustesPacientesActivity::class.java))
+        }
+
+        informacionPlanCardView.setOnClickListener {
+            //Activity informacion del plan
+        }
+
+        ayudaCardView.setOnClickListener {
+            //Activity para ayudar
+        }
+
+        acercaCardView.setOnClickListener {
+            //Activity para contactarnos
         }
 
         //Evento para salir de la cuenta
-        salirCardView.setOnClickListener {
+        cerrarSesionButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             sharedPreferences.edit().remove("uid").apply()
             startActivity(Intent(context, LoginActivity::class.java))

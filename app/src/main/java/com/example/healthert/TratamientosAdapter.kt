@@ -12,12 +12,14 @@ class TratamientosAdapter(private val medicamentosAgendados : List<PacientesSalu
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val nombreMedicamento : TextView
         val indicaciones : TextView
-        val fechas : TextView
+        val fechaInicio : TextView
+        val fechaFinal : TextView
 
         init {
             nombreMedicamento = itemView.findViewById(R.id.nombreMedicamentoTextView)
             indicaciones = itemView.findViewById(R.id.indicacionesTextView)
-            fechas = itemView.findViewById(R.id.fechasTextView)
+            fechaInicio = itemView.findViewById(R.id.fechaInicio)
+            fechaFinal = itemView.findViewById(R.id.fechaFinal)
         }
     }
 
@@ -35,13 +37,13 @@ class TratamientosAdapter(private val medicamentosAgendados : List<PacientesSalu
     override fun onBindViewHolder(viewHolder: TratamientosAdapter.ViewHolder, i: Int) {
         val nombreMedicamento = medicamentosAgendados[i].nombreMedicamento
         val indicaciones = "${medicamentosAgendados[i].cantidad} cada ${medicamentosAgendados[i].numHoras} horas"
-        val fechas = "Inicio:${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaIni?.toDate()!!)} Fin:${SimpleDateFormat("dd/MM/yyyy").format(
-            medicamentosAgendados[i].fechaFinal?.toDate()!!
-        )}"
+        val fechasInicio = "Inicio: ${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaIni?.toDate()!!)}"
+        val fechaFinal = "Fin: ${SimpleDateFormat("dd/MM/yyyy").format(medicamentosAgendados[i].fechaFinal?.toDate()!!)}"
 
         viewHolder.nombreMedicamento.text = nombreMedicamento
         viewHolder.indicaciones.text = indicaciones
-        viewHolder.fechas.text = fechas
+        viewHolder.fechaInicio.text = fechasInicio
+        viewHolder.fechaFinal.text = fechaFinal
     }
 
     override fun getItemCount(): Int {

@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.healthert.AgregarAdapter
 import com.example.healthert.PacientesAdapter
 import com.example.healthert.R
+import com.example.healthert.classes.Paciente
 import com.example.healthert.databinding.FragmentDashboardBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -215,19 +216,6 @@ class DashboardFragment : Fragment() {
 
 }
 
-data class Paciente(
-    val nombrec: HashMap<String, String> = hashMapOf(),
-    val apellidoP: String = "",
-    val apellidoM: String = "",
-    val usuarioCuidador: String = "",
-    val edad: Int = 0,
-    val altura: Int = 0,
-    val peso: Int = 0,
-    val sexo: String = "",
-    val alergias: String = "",
-    val padecimientos: String = "",
-    val curp: String = ""
-)
 fun isDarkTheme(context: Context): Boolean {
     val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     return currentNightMode == Configuration.UI_MODE_NIGHT_YES

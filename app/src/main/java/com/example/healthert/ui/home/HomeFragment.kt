@@ -35,23 +35,23 @@ class HomeFragment : Fragment() {
         viewPager = binding.viewPagerPacientesSalud
 
         val uid = FirebaseAuth.getInstance().uid.toString()
-        usuarios.whereEqualTo("usuarioCuidador", uid).get(Source.CACHE).addOnSuccessListener {
-            for (document in it) {
-                val paciente = document.toObject(com.example.healthert.classes.Paciente::class.java)
-                pacientes.add(paciente)
-            }
-
-            adapter = PacientesSaludAdapter(
-                requireContext(),
-                FirebaseAuth.getInstance().uid.toString(),
-                pacientes, this
-            )
-            if (adapter.itemCount == 0) {
-                binding.logoBack.visibility = View.VISIBLE
-                viewPager.visibility = View.GONE
-            }
-            viewPager.adapter = adapter
-        }
+//        usuarios.whereEqualTo("usuarioCuidador", uid).get(Source.CACHE).addOnSuccessListener {
+//            for (document in it) {
+//                val paciente = document.toObject(com.example.healthert.classes.Paciente::class.java)
+//                pacientes.add(paciente)
+//            }
+//
+//            adapter = PacientesSaludAdapter(
+//                requireContext(),
+//                FirebaseAuth.getInstance().uid.toString(),
+//                pacientes, this
+//            )
+//            if (adapter.itemCount == 0) {
+//                binding.logoBack.visibility = View.VISIBLE
+//                viewPager.visibility = View.GONE
+//            }
+//            viewPager.adapter = adapter
+//        }
         usuarios.whereEqualTo("usuarioCuidador", uid).get(Source.SERVER).addOnSuccessListener {
             pacientes.clear()
             for (document in it) {

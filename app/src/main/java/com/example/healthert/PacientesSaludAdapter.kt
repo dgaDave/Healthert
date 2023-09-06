@@ -71,7 +71,7 @@ class PacientesSaludAdapter(
         var reportarImageView: ImageView
         var qrImageView: ImageView
         var viewPagerTratamientos: ViewPager2
-        var grafica : LineChartView
+        var grafica: LineChartView
 
 
         init {
@@ -125,8 +125,8 @@ class PacientesSaludAdapter(
 
         val userRef = storageRef.child("images/" + "$uid$curp")
         Glide.with(fragment).load(userRef).into(viewHolder.imageView)
-
         val usuarioCuidador = pacientes[i].usuarioCuidador
+        var lineSet = mutableListOf<Pair<String, Float>>()
         var adapter: TratamientosAdapter
         val tratamientos = mutableListOf<Tratamiento>()
         val alertas = mutableListOf<Alerta>()
@@ -166,17 +166,49 @@ class PacientesSaludAdapter(
                 Toast.makeText(context, "Valio verga", Toast.LENGTH_SHORT).show()
 
             }
+
         db.collection("historial").whereEqualTo("paciente", "$usuarioCuidador$curp").get()
-            .addOnSuccessListener {
+            .addOnSuccessListener { it ->
 
-                for (document in it) {
-                    val historial = document.toObject(Historial::class.java)
-                    historiales.add(historial)
+                if (it.isEmpty) {
+                    lineSet = mutableListOf(
+                        "" to 1f,
+                        "" to 2f,
+                        "" to 3f,
+                        "" to 4f,
+                        "" to 5f,
+                        "" to 6f,
+                        "" to 7f,
+                        "" to 8f
+                    )
+                }else {
+                    for (document in it) {
+                        val historial = document.toObject(Historial::class.java)
+                        historiales.add(historial)
+                    }
+
+                    historiales.sortBy { o -> o.fechaLong }
+
+                    for (his in historiales.takeLast(8)){
+                        lineSet+= listOf("" to his.bpm.toFloat())
+                    }
+
                 }
-                historiales.sortBy { o -> o.fechaLong }
-            }.addOnFailureListener {
 
+                viewHolder.grafica.gradientFillColors = intArrayOf(Color.parseColor("#6fd81c"), Color.TRANSPARENT)
+                viewHolder.grafica.animation.duration = 2000
+                viewHolder.grafica.labelsFormatter = { it.toInt().toString() + "bmp" }
+                viewHolder.grafica.animate(lineSet as List<Pair<String, Float>>)
+                viewHolder.grafica.onDataPointTouchListener = { index, x, y ->
+
+                }
+
+            }.addOnFailureListener {
+                Toast.makeText(context, "No hay historial del paciente", Toast.LENGTH_SHORT).show()
             }
+
+        //Grafica Linea
+
 
         if (alergias.isNullOrEmpty()) {
             viewHolder.alergias.text = "El paciente no tiene alergias"
@@ -188,7 +220,7 @@ class PacientesSaludAdapter(
         } else {
             viewHolder.padecimientos.text = padecimientos
         }
-        if(tratamientos.isNullOrEmpty()){
+        if (tratamientos.isNullOrEmpty()) {
             viewHolder.tratamientosParrafoText.visibility = View.VISIBLE
         }
         if (sexo == "Prefiero no especificar") {
@@ -210,35 +242,17 @@ class PacientesSaludAdapter(
 
         viewHolder.qrImageView.setOnClickListener {
             storageRef.child("fichas/$uid$curp").downloadUrl.addOnSuccessListener {
-                val intent = Intent(context,qrActivity::class.java)
-                intent.putExtra("link",it.toString())
+                val intent = Intent(context, qrActivity::class.java)
+                intent.putExtra("link", it.toString())
                 context.startActivity(intent)
 
                 //Poner loading en otro activity
 
             }.addOnFailureListener {
-                Toast.makeText(context,"F",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "F", Toast.LENGTH_SHORT).show()
             }
         }
 
-        val lineSet = listOf(
-            "03:00" to 60f,
-            "" to 63f,
-            "09:00" to 69f,
-            "" to 75f,
-            "12:00" to 80f,
-            "" to 85f,
-            "18:00" to 60f,
-            "" to 60f
-        )
-
-        viewHolder.grafica.gradientFillColors = intArrayOf(Color.parseColor("#6fd81c"), Color.TRANSPARENT)
-        viewHolder.grafica.animation.duration = 2000
-        viewHolder.grafica.labelsFormatter ={it.toInt().toString() + "bmp"}
-        viewHolder.grafica.animate(lineSet)
-        viewHolder.grafica.onDataPointTouchListener={index,x,y->
-
-        }
 
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -296,14 +310,13 @@ class PacientesSaludAdapter(
             table.widthPercentage = 100f
 
 
-
             val image =
                 Image.getInstance(drawableToBytes(context.getDrawable(R.drawable.logo_doc)!!))
 
             image.scaleAbsolute(100f, 100f)
             val imageCell = PdfPCell(image)
-            imageCell.verticalAlignment=Element.ALIGN_MIDDLE
-            imageCell.horizontalAlignment=Element.ALIGN_CENTER
+            imageCell.verticalAlignment = Element.ALIGN_MIDDLE
+            imageCell.horizontalAlignment = Element.ALIGN_CENTER
             imageCell.border = PdfPCell.NO_BORDER
             table.addCell(imageCell)
 
